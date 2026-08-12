@@ -37,6 +37,8 @@ def run_migrations():
             conn.execute(text("ALTER TABLE users ADD COLUMN city VARCHAR"))
         if "province" not in existing_cols:
             conn.execute(text("ALTER TABLE users ADD COLUMN province VARCHAR"))
+        if "district" not in existing_cols:
+            conn.execute(text("ALTER TABLE users ADD COLUMN district VARCHAR"))
 
 def seed_default_admin():
     admin_email = os.getenv("ADMIN_EMAIL")

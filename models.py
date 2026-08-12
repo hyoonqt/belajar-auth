@@ -16,3 +16,4 @@ class UserDB(Base):
     postal_code = Column(String, nullable=True)
     city = Column(String, nullable=True)
     province = Column(String, nullable=True)
+    district = Column(String, nullable=True)

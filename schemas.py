@@ -30,6 +30,7 @@ class UserRegister(BaseModel):
     country: str
     province: str
     city: str
+    district: Optional[str] = None
     postal_code: Optional[str] = None
     profile_picture: Optional[str] = None       
 
@@ -100,6 +101,7 @@ class UserOut(BaseModel):
     postal_code: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
+    district: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -112,6 +114,7 @@ class UpdateProfile(BaseModel):
     postal_code: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
+    district: Optional[str] = None
     current_password: Optional[str] = None
     otp: Optional[str] = None
     new_password: Optional[str] = None
@@ -133,6 +136,7 @@ class AdminUpdateUser(BaseModel):
     postal_code: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
+    district: Optional[str] = None
 
     @field_validator("new_password")
     @classmethod

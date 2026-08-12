@@ -59,6 +59,7 @@ async def request_registration(
         "postal_code": payload.postal_code,
         "city": payload.city,
         "province": payload.province,
+        "district": payload.district,
         "otp": otp,
         "exp": time.time() + OTP_EXP_SECONDS,
     }
@@ -91,6 +92,7 @@ async def verify_registration(
         postal_code=record["postal_code"],
         city=record["city"],
         province=record["province"],
+        district=record["district"],
         role="user",
     )
     db.add(new_user)

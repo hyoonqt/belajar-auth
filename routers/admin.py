@@ -65,6 +65,8 @@ async def admin_update_user(
         target.city = payload.city
     if payload.province is not None:
         target.province = payload.province
+    if payload.district is not None:
+        target.district = payload.district
 
     db.commit()
     db.refresh(target)

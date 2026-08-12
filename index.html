@@ -227,9 +227,15 @@
             </div>
           </div>
           <div class="form-group"><label>Kota / Kabupaten</label>
-            <select x-model="reg.city" :disabled="reg.country !== 'Indonesia' || !reg.province || regCities.length === 0">
+            <select x-model="reg.city" @change="onCityChange('reg')" :disabled="reg.country !== 'Indonesia' || !reg.province || regCities.length === 0">
               <option value="">Pilih Kota/Kabupaten...</option>
               <template x-for="c in regCities" :key="c.id"><option :value="c.name" x-text="c.name"></option></template>
+            </select>
+          </div>
+          <div class="form-group"><label>Kecamatan</label>
+            <select x-model="reg.district" :disabled="!reg.city || regDistricts.length === 0">
+              <option value="">Pilih Kecamatan...</option>
+              <template x-for="d in regDistricts" :key="d.id"><option :value="d.name" x-text="d.name"></option></template>
             </select>
           </div>
           <div class="form-group"><label>Password *</label>
@@ -336,6 +342,7 @@
                 <div class="info-group"><div class="info-label">Negara</div><div class="info-value" x-text="user?.country || '-'"></div></div>
                 <div class="info-group"><div class="info-label">Provinsi</div><div class="info-value" x-text="user?.province || '-'"></div></div>
                 <div class="info-group"><div class="info-label">Kota / Kabupaten</div><div class="info-value" x-text="user?.city || '-'"></div></div>
+                <div class="info-group"><div class="info-label">Kecamatan</div><div class="info-value" x-text="user?.district || '-'"></div></div>
                 <div class="info-group"><div class="info-label">Role</div><div class="info-value" style="text-transform: capitalize;" x-text="user?.role"></div></div>
               </div>
               <button class="btn-outline" style="margin-top: 12px; width:auto; padding: 10px 22px;" @click="editProfileMode = true"><i class='bx bx-edit'></i> Edit Profil</button>
@@ -369,9 +376,15 @@
                 </div>
               </div>
               <div class="form-group"><label>Kota / Kabupaten</label>
-                <select x-model="prof.city" :disabled="prof.country !== 'Indonesia' || !prof.province || profCities.length === 0">
+                <select x-model="prof.city" @change="onCityChange('prof')" :disabled="prof.country !== 'Indonesia' || !prof.province || profCities.length === 0">
                   <option value="">Pilih Kota/Kabupaten...</option>
                   <template x-for="c in profCities" :key="c.id"><option :value="c.name" x-text="c.name"></option></template>
+                </select>
+              </div>
+              <div class="form-group"><label>Kecamatan</label>
+                <select x-model="prof.district" :disabled="!prof.city || profDistricts.length === 0">
+                  <option value="">Pilih Kecamatan...</option>
+                  <template x-for="d in profDistricts" :key="d.id"><option :value="d.name" x-text="d.name"></option></template>
                 </select>
               </div>
               <div class="flex-between" style="margin-top: 28px;">
@@ -458,7 +471,7 @@
                       <template x-if="editAdminUserId !== u.id">
                         <td>
                           <div x-text="u.name || '-'" style="font-weight: 500;"></div>
-                          <div style="font-size: 11px; color: var(--ink-muted);" x-text="[u.city, u.province, u.country].filter(Boolean).join(', ') || '-'"></div>
+                          <div style="font-size: 11px; color: var(--ink-muted);" x-text="[u.district, u.city, u.province, u.country].filter(Boolean).join(', ') || '-'"></div>
                         </td>
                       </template>
                       <template x-if="editAdminUserId !== u.id">
@@ -486,13 +499,20 @@
                           </select>
 
                           <!-- Dropdown Kota Admin -->
-                          <select x-model="editAdminForm.city" :disabled="!editAdminForm.province || adminCities.length === 0" style="padding: 6px; font-size: 13px;">
+                          <select x-model="editAdminForm.city" @change="editAdminForm.district = ''; onAdminCityChange(editAdminForm.city)" :disabled="!editAdminForm.province || adminCities.length === 0" style="padding: 6px; font-size: 13px;">
                             <option value="">Pilih Kota...</option>
                             <template x-for="c in adminCities" :key="c.id">
                               <option :value="c.name" x-text="c.name" :selected="c.name === editAdminForm.city"></option>
                             </template>
                           </select>
                         </div>
+                        <!-- Dropdown Kecamatan Admin -->
+                        <select x-model="editAdminForm.district" :disabled="!editAdminForm.city || adminDistricts.length === 0" style="padding: 6px; font-size: 13px; width: 100%;">
+                          <option value="">Pilih Kecamatan...</option>
+                          <template x-for="d in adminDistricts" :key="d.id">
+                            <option :value="d.name" x-text="d.name" :selected="d.name === editAdminForm.district"></option>
+                          </template>
+                        </select>
                       </td>
                     </template>
                       <template x-if="editAdminUserId === u.id">
@@ -554,14 +574,15 @@
         showPwd: { login: false, reg: false, reset: false, profNew: false, profCur: false },
         
         globalCountries: [], provinces: [], regCities: [], profCities: [],
+        regDistricts: [], profDistricts: [],
         login: { email: '', password: '', otp: '' },
-        reg: { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', postal_code: '', profile_picture: '', otp: '' },
+        reg: { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', postal_code: '', profile_picture: '', otp: '' },
         fgt: { email: '', otp: '', newPass: '' },
-        prof: { name: '', country: 'Indonesia', city: '', province: '', postal_code: '', profile_picture: '', newPass: '', curPass: '', otp: '' },
+        prof: { name: '', country: 'Indonesia', city: '', province: '', district: '', postal_code: '', profile_picture: '', newPass: '', curPass: '', otp: '' },
         del: { requested: false, otp: '' },
         
-        adminUsers: [], editAdminUserId: null, editAdminForm: { name: '', role: '', province: '', country: '', city: ''},
-        adminCities: [],
+        adminUsers: [], editAdminUserId: null, editAdminForm: { name: '', role: '', province: '', country: '', city: '', district: ''},
+        adminCities: [], adminDistricts: [],
         adminModal: { show: false, user: null, newPass: '' },
 
         async initApp() {
@@ -601,14 +622,22 @@
         },
 
         // Sinkronisasi ulang data diri ke form edit
-        syncProfileForm() {
+        async syncProfileForm() {
           if(this.user) {
             this.prof.name = this.user.name || '';
             this.prof.country = this.user.country || 'Indonesia';
             this.prof.province = this.user.province || '';
             this.prof.city = this.user.city || '';
+            this.prof.district = this.user.district || '';
             this.prof.profile_picture = this.user.profile_picture || '';
-            if(this.prof.province) this.onProvChange('prof');
+            if(this.prof.province) {
+              await this.onProvChange('prof');
+              this.prof.city = this.user.city || '';
+              if(this.prof.city) {
+                await this.onCityChange('prof');
+                this.prof.district = this.user.district || '';
+              }
+            }
           }
         },
 
@@ -682,7 +711,7 @@
         },
         onCountryChange(targetObj) {
           let t = targetObj === 'reg' ? this.reg : this.prof;
-          if (t.country !== 'Indonesia') { t.province = ''; t.city = ''; }
+          if (t.country !== 'Indonesia') { t.province = ''; t.city = ''; t.district = ''; }
         },
         async onProvChange(targetObj) {
           let provName = targetObj === 'reg' ? this.reg.province : this.prof.province;
@@ -692,8 +721,21 @@
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
             let cities = await r.json();
-            if (targetObj === 'reg') { this.regCities = cities; this.reg.city = ''; } 
-            else { this.profCities = cities; this.prof.city = ''; }
+            if (targetObj === 'reg') { this.regCities = cities; this.reg.city = ''; this.reg.district = ''; this.regDistricts = []; } 
+            else { this.profCities = cities; this.prof.city = ''; this.prof.district = ''; this.profDistricts = []; }
+          } catch(e) {}
+        },
+        async onCityChange(targetObj) {
+          let cityName = targetObj === 'reg' ? this.reg.city : this.prof.city;
+          let cities = targetObj === 'reg' ? this.regCities : this.profCities;
+          if(!cityName) return;
+          let city = cities.find(x => x.name === cityName);
+          if(!city) return;
+          try {
+            let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
+            let districts = await r.json();
+            if (targetObj === 'reg') { this.regDistricts = districts; this.reg.district = ''; } 
+            else { this.profDistricts = districts; this.prof.district = ''; }
           } catch(e) {}
         },
 
@@ -746,7 +788,7 @@
           this.syncProfileForm(); // Sinkronkan ke form lokal
         },
         async updateProfile() {
-          let body = { name: this.prof.name, country: this.prof.country, city: this.prof.city, province: this.prof.province, profile_picture: this.prof.profile_picture };
+          let body = { name: this.prof.name, country: this.prof.country, city: this.prof.city, province: this.prof.province, district: this.prof.district, profile_picture: this.prof.profile_picture };
           this.user = await this.apiCall('/users/me', 'PATCH', body, true);
           this.editProfileMode = false;
           this.triggerAlert("Profil berhasil diperbarui.", "success");
@@ -776,19 +818,24 @@
 
         // ADMIN API
         async loadAdminUsers() { this.adminUsers = await this.apiCall('/admin/users', 'GET', null, true); },
-       startEdit(u) { 
+       async startEdit(u) { 
           this.editAdminUserId = u.id; 
           this.editAdminForm.name = u.name || ''; 
           this.editAdminForm.role = u.role || 'user'; 
           this.editAdminForm.province = u.province || '';
           this.editAdminForm.city = u.city || '';
+          this.editAdminForm.district = u.district || '';
           this.editAdminForm.country = u.country || '';
           this.editAdminForm.postal_code = u.postal_code || '';
 
           if (u.province){
-            this.onAdminProvChange(u.province);
+            await this.onAdminProvChange(u.province);
           }
           this.editAdminForm.city = u.city || '';
+          if (u.city) {
+            await this.onAdminCityChange(u.city);
+          }
+          this.editAdminForm.district = u.district || '';
         },
         async saveEdit(id) {
           await this.apiCall(`/admin/users/${id}`, 'PATCH', this.editAdminForm, true);
@@ -796,7 +843,7 @@
           await this.loadAdminUsers();
         },
         async onAdminProvChange(provName) {
-          if(!provName) { this.adminCities = []; return; }
+          if(!provName) { this.adminCities = []; this.adminDistricts = []; return; }
           let prov = this.provinces.find(x => x.name === provName);
           if(!prov) return;
 
@@ -804,6 +851,16 @@
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
             this.adminCities = await r.json();
           } catch(e) { this.adminCities = []; }
+        },
+        async onAdminCityChange(cityName) {
+          if(!cityName) { this.adminDistricts = []; return; }
+          let city = this.adminCities.find(x => x.name === cityName);
+          if(!city) return;
+
+          try {
+            let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
+            this.adminDistricts = await r.json();
+          } catch(e) { this.adminDistricts = []; }
         },
         openAdminModal(u) { this.adminModal = { show: true, user: u, newPass: '' }; },
         async submitAdminPass() {

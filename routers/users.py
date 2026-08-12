@@ -72,6 +72,8 @@ async def update_profile(
         user.city = payload.city
     if payload.province is not None:
         user.province = payload.province
+    if payload.district is not None:
+        user.district = payload.district
 
     db.commit()
     db.refresh(user)
@@ -109,3 +111,4 @@ async def delete_own_account(
     db.commit()
     del pending_deletions[user.email]
     return {"message": "Akun berhasil dihapus."}
+    
