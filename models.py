@@ -13,7 +13,6 @@ class UserDB(Base):
 
     profile_picture = Column(String, nullable=True)
     country = Column(String, nullable=True)
-    postal_code = Column(String, nullable=True)
     city = Column(String, nullable=True)
     province = Column(String, nullable=True)
     district = Column(String, nullable=True)

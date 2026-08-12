@@ -576,9 +576,9 @@
         globalCountries: [], provinces: [], regCities: [], profCities: [],
         regDistricts: [], profDistricts: [],
         login: { email: '', password: '', otp: '' },
-        reg: { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', postal_code: '', profile_picture: '', otp: '' },
+        reg: { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: '' },
         fgt: { email: '', otp: '', newPass: '' },
-        prof: { name: '', country: 'Indonesia', city: '', province: '', district: '', postal_code: '', profile_picture: '', newPass: '', curPass: '', otp: '' },
+        prof: { name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', newPass: '', curPass: '', otp: '' },
         del: { requested: false, otp: '' },
         
         adminUsers: [], editAdminUserId: null, editAdminForm: { name: '', role: '', province: '', country: '', city: '', district: ''},
@@ -613,7 +613,7 @@
         // Pembersihan State Halaman Auth
         resetAuthState() {
           this.login = { email: '', password: '', otp: '' };
-          this.reg = { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', postal_code: '', profile_picture: '', otp: '' };
+          this.reg = { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', profile_picture: '', otp: '' };
           this.fgt = { email: '', otp: '', newPass: '' };
           this.loginOtpRequested = false;
           this.loginMode = 'password';
@@ -826,7 +826,6 @@
           this.editAdminForm.city = u.city || '';
           this.editAdminForm.district = u.district || '';
           this.editAdminForm.country = u.country || '';
-          this.editAdminForm.postal_code = u.postal_code || '';
 
           if (u.province){
             await this.onAdminProvChange(u.province);

@@ -31,8 +31,6 @@ def run_migrations():
             conn.execute(text("ALTER TABLE users ADD COLUMN profile_picture VARCHAR"))
         if "country" not in existing_cols:
             conn.execute(text("ALTER TABLE users ADD COLUMN country VARCHAR"))
-        if "postal_code" not in existing_cols:
-            conn.execute(text("ALTER TABLE users ADD COLUMN postal_code VARCHAR"))
         if "city" not in existing_cols:
             conn.execute(text("ALTER TABLE users ADD COLUMN city VARCHAR"))
         if "province" not in existing_cols:

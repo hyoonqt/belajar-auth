@@ -66,8 +66,6 @@ async def update_profile(
         user.profile_picture = payload.profile_picture
     if payload.country is not None:
         user.country = payload.country
-    if payload.postal_code is not None:
-        user.postal_code = payload.postal_code
     if payload.city is not None:
         user.city = payload.city
     if payload.province is not None:
