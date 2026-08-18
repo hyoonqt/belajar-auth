@@ -87,9 +87,6 @@ class VerifyDeleteAccount(BaseModel):
         return v
 
 
-# --- Profil & manajemen role ---
-
-
 class UserOut(BaseModel):
     id: int
     email: EmailStr

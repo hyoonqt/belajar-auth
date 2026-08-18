@@ -16,7 +16,7 @@ from email_service import send_otp_email
 router = APIRouter(prefix="/auth", tags=["Auth"])
 limiter = Limiter(key_func=get_remote_address)
 
-OTP_EXP_SECONDS = 180
+OTP_EXP_SECONDS = 60
 pending_registrations = {}
 pending_resets = {}
 pending_login_otps = {}
@@ -63,7 +63,7 @@ async def request_registration(
         "exp": time.time() + OTP_EXP_SECONDS,
     }
     await send_otp_email(payload.email, otp, "register")
-    return {"message": "OTP berhasil dikirim."}
+    return {"message": "OTP berhasil dikirim.", "expires_in": OTP_EXP_SECONDS}
 
 
 @router.post("/register/verify")
@@ -131,7 +131,10 @@ async def forgot_password(
     otp = "".join([str(secrets.randbelow(10)) for _ in range(6)])
     pending_resets[payload.email] = {"otp": otp, "exp": time.time() + OTP_EXP_SECONDS}
     await send_otp_email(payload.email, otp, "reset")
-    return {"message": "Jika email terdaftar, kode OTP telah dikirim."}
+    return {
+        "message": "Jika email terdaftar, kode OTP telah dikirim.",
+        "expires_in": OTP_EXP_SECONDS,
+    }
 
 
 @router.post("/password/reset")
@@ -168,9 +171,15 @@ async def request_login_otp(
         return {"message": "Jika email terdaftar, OTP telah dikirim."}
 
     otp = "".join([str(secrets.randbelow(10)) for _ in range(6)])
-    pending_login_otps[payload.email] = {"otp": otp, "exp": time.time() + OTP_EXP_SECONDS}
+    pending_login_otps[payload.email] = {
+        "otp": otp,
+        "exp": time.time() + OTP_EXP_SECONDS,
+    }
     await send_otp_email(payload.email, otp, "login")
-    return {"message": "Jika email terdaftar, OTP telah dikirim."}
+    return {
+        "message": "Jika email terdaftar, OTP telah dikirim.",
+        "expires_in": OTP_EXP_SECONDS,
+    }
 
 
 @router.post("/login/otp/verify")

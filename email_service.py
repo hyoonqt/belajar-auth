@@ -134,7 +134,6 @@ Secure Auth System
     msg["To"] = receiver_email
     msg["Subject"] = subject_text
 
-    # 4. Attach bagian teks dan HTML (Urutan sangat penting: plain dulu, baru html)
     part1 = MIMEText(plain_text, "plain")
     part2 = MIMEText(html_content, "html")
     

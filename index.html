@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,122 +18,697 @@
 
   <style>
     :root {
-      --bg: #ececea; --surface: #fafaf9; --surface-2: #f1f0ee; --surface-hover: #e7e6e2;
-      --border: #d9d7d1; --border-strong: #bcbab2; --ink: #191917; --ink-muted: #6c6b65;
-      --ink-soft: #9d9b93; --white: #ffffff;
-      --danger: #9c3b2e; --danger-bg: #f6ece9; --success: #2f6b4c; --success-bg: #eaf1ec;
+      --bg: #ececea;
+      --surface: #fafaf9;
+      --surface-2: #f1f0ee;
+      --surface-hover: #e7e6e2;
+      --border: #d9d7d1;
+      --border-strong: #bcbab2;
+      --ink: #191917;
+      --ink-muted: #6c6b65;
+      --ink-soft: #9d9b93;
+      --white: #ffffff;
+      --danger: #9c3b2e;
+      --danger-bg: #f6ece9;
+      --success: #2f6b4c;
+      --success-bg: #eaf1ec;
       --sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--sans); }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--sans);
+    }
+
     body {
       background-color: var(--bg);
-      background-image: linear-gradient(rgba(25,25,23,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(25,25,23,0.045) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(25, 25, 23, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(25, 25, 23, 0.045) 1px, transparent 1px);
       background-size: 56px 56px;
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
     }
-    [x-cloak] { display: none !important; }
 
-    h2 { font-size: 21px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.01em; }
-    h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em; }
-    p.subtitle { color: var(--ink-muted); font-size: 13.5px; margin-bottom: 26px; line-height: 1.55; }
-
-    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
-    .eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--ink); flex-shrink: 0; }
-
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); margin-bottom: 7px; font-weight: 500; }
-    input, select {
-      width: 100%; padding: 11px 12px; background: var(--white); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--ink); font-size: 14px; font-family: var(--sans); transition: border-color .15s, box-shadow .15s;
+    [x-cloak] {
+      display: none !important;
     }
-    input:focus, select:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(25,25,23,0.08); }
-    input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; background: var(--surface-2); }
-    input::placeholder { color: var(--ink-soft); }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; gap: 0; } }
+    h2 {
+      font-size: 21px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
 
-    .password-wrapper { position: relative; display: flex; align-items: center; }
-    .password-wrapper input { padding-right: 42px; }
-    .toggle-password { position: absolute; right: 12px; cursor: pointer; color: var(--ink-soft); font-size: 19px; }
-    .toggle-password:hover { color: var(--ink); }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
 
-    .drop-zone { border: 1px dashed var(--border-strong); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; background: var(--surface-2); }
-    .drop-zone:hover, .drop-zone.drag-active { border-color: var(--ink); background: var(--surface-hover); }
-    .drop-zone i { font-size: 26px; color: var(--ink-soft); margin-bottom: 6px; }
-    .drop-zone img { max-height: 96px; border-radius: 6px; margin-top: 10px; border: 1px solid var(--border); object-fit: cover; }
-    .hidden-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    p.subtitle {
+      color: var(--ink-muted);
+      font-size: 13.5px;
+      margin-bottom: 26px;
+      line-height: 1.55;
+    }
 
-    button { width: 100%; padding: 11px; background: var(--ink); color: var(--white); border: 1px solid var(--ink); border-radius: 6px; font-size: 13.5px; font-weight: 500; cursor: pointer; transition: opacity 0.15s, background 0.15s; letter-spacing: 0.01em; }
-    button:hover { opacity: 0.85; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
-    button.btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
-    button.btn-danger:hover { background: var(--danger-bg); opacity: 1; }
-    button.btn-outline { background: transparent; border: 1px solid var(--border-strong); color: var(--ink); }
-    button.btn-outline:hover { background: var(--surface-hover); opacity: 1; }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
 
-    .auth-layout { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px 20px; }
-    .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 36px; border-radius: 12px; width: 100%; max-width: 440px; box-shadow: 0 1px 2px rgba(25,25,23,0.04), 0 16px 40px rgba(25,25,23,0.07); }
-    .brand-mark { display: flex; align-items: center; gap: 10px; margin-bottom: 26px; }
-    .brand-mark .chip { width: 30px; height: 30px; border-radius: 6px; background: var(--ink); position: relative; flex-shrink: 0; }
-    .brand-mark .chip::after { content: ''; position: absolute; inset: 7px; border: 1.4px solid var(--white); border-radius: 2px; }
-    .brand-mark span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); font-weight: 500; }
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--ink);
+      flex-shrink: 0;
+    }
 
-    .dash-layout { display: flex; height: 100vh; width: 100vw; overflow: hidden; }
-    .sidebar { width: 250px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
-    .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
-    .sidebar-header img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: var(--surface-2); }
-    .sidebar-header div { overflow: hidden; }
-    .sidebar-header h3 { margin: 0; font-size: 13.5px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+    .form-group {
+      margin-bottom: 16px;
+    }
 
-    .nav-menu { padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 6px; cursor: pointer; color: var(--ink-muted); font-size: 13.5px; font-weight: 500; transition: all 0.15s; border-left: 2px solid transparent; }
-    .nav-item:hover { background: var(--surface-hover); color: var(--ink); }
-    .nav-item.active { background: var(--surface-2); color: var(--ink); border-left-color: var(--ink); }
-    .nav-item i { font-size: 17px; }
+    label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      margin-bottom: 7px;
+      font-weight: 500;
+    }
 
-    .main-content { flex: 1; overflow-y: auto; background: var(--bg); background-image: linear-gradient(rgba(25,25,23,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(25,25,23,0.035) 1px, transparent 1px); background-size: 56px 56px; }
-    .content-header { padding: 22px 40px; border-bottom: 1px solid var(--border); background: rgba(250,250,249,0.75); backdrop-filter: blur(6px); position: sticky; top: 0; z-index: 5; }
-    .content-header h2 { margin: 0; }
-    .content-header p.subtitle { margin: 4px 0 0; }
-    .dashboard-container { max-width: 760px; margin: 0 auto; width: 100%; padding: 32px 40px 60px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px; margin-bottom: 20px; }
+    input,
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      font-size: 14px;
+      font-family: var(--sans);
+      transition: border-color .15s, box-shadow .15s;
+    }
 
-    .link { color: var(--ink); font-size: 12.5px; cursor: pointer; text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; display: inline-block; font-weight: 500; }
-    .link:hover { text-decoration-color: var(--ink); }
-    .text-center { text-align: center; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(25, 25, 23, 0.08);
+    }
 
-    .alert { position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 13px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 500; max-width: 380px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); animation: slideIn 0.25s ease-out; cursor: pointer; border: 1px solid; }
-    @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    .alert.error { background: var(--danger-bg); color: var(--danger); border-color: rgba(156,59,46,0.3); }
-    .alert.success { background: var(--success-bg); color: var(--success); border-color: rgba(47,107,76,0.3); }
+    input:disabled,
+    select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: var(--surface-2);
+    }
 
-    .info-group { margin-bottom: 18px; }
-    .info-label { font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
-    .info-value { font-size: 14.5px; font-weight: 500; }
+    input::placeholder {
+      color: var(--ink-soft);
+    }
 
-    .table-wrap { overflow-x: auto; margin-top: 4px; }
-    .user-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .user-table th, .user-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
-    .user-table th { color: var(--ink-soft); font-weight: 500; text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.07em; font-family: var(--mono); }
-    .role-badge { font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 3px 8px 3px 6px; border-radius: 4px; text-transform: uppercase; background: var(--surface-2); color: var(--ink-muted); border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 5px; }
-    .role-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-soft); }
-    .role-badge.admin { color: var(--ink); border-color: var(--border-strong); }
-    .role-badge.admin::before { background: var(--ink); }
-    .icon-btn { background: transparent; border: none; color: var(--ink-muted); cursor: pointer; font-size: 17px; padding: 6px; border-radius: 5px; display: inline-flex; width: auto; transition: 0.15s; }
-    .icon-btn:hover { color: var(--ink); background: var(--surface-hover); }
-    .icon-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(20,20,18,0.5); z-index: 9000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-    .modal-content { background: var(--surface); padding: 28px; border-radius: 10px; width: 380px; max-width: 90%; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+    @media (max-width: 600px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
 
-    .mode-tabs { display: flex; gap: 4px; margin-bottom: 22px; background: var(--surface-2); padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
-    .mode-tab { flex: 1; text-align: center; font-size: 12.5px; font-weight: 500; color: var(--ink-muted); cursor: pointer; padding: 7px 10px; border-radius: 6px; transition: 0.15s; }
-    .mode-tab:hover { color: var(--ink); }
-    .mode-tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(25,25,23,0.08); font-weight: 600; }
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-wrapper input {
+      padding-right: 42px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-size: 19px;
+    }
+
+    .toggle-password:hover {
+      color: var(--ink);
+    }
+
+    .drop-zone {
+      border: 1px dashed var(--border-strong);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      position: relative;
+      background: var(--surface-2);
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-active {
+      border-color: var(--ink);
+      background: var(--surface-hover);
+    }
+
+    .drop-zone i {
+      font-size: 26px;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+    }
+
+    .drop-zone img {
+      max-height: 96px;
+      border-radius: 6px;
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+
+    .hidden-input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      background: var(--ink);
+      color: var(--white);
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    button.btn-danger {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    button.btn-danger:hover {
+      background: var(--danger-bg);
+      opacity: 1;
+    }
+
+    button.btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--ink);
+    }
+
+    button.btn-outline:hover {
+      background: var(--surface-hover);
+      opacity: 1;
+    }
+
+    .auth-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 36px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 1px 2px rgba(25, 25, 23, 0.04), 0 16px 40px rgba(25, 25, 23, 0.07);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .brand-mark .chip {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: var(--ink);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .brand-mark .chip::after {
+      content: '';
+      position: absolute;
+      inset: 7px;
+      border: 1.4px solid var(--white);
+      border-radius: 2px;
+    }
+
+    .brand-mark span {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .dash-layout {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-header img {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .sidebar-header div {
+      overflow: hidden;
+    }
+
+    .sidebar-header h3 {
+      margin: 0;
+      font-size: 13.5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .nav-menu {
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--ink-muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: var(--surface-hover);
+      color: var(--ink);
+    }
+
+    .nav-item.active {
+      background: var(--surface-2);
+      color: var(--ink);
+      border-left-color: var(--ink);
+    }
+
+    .nav-item i {
+      font-size: 17px;
+    }
+
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg);
+      background-image: linear-gradient(rgba(25, 25, 23, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(25, 25, 23, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+
+    .content-header {
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(250, 250, 249, 0.75);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .content-header h2 {
+      margin: 0;
+    }
+
+    .content-header p.subtitle {
+      margin: 4px 0 0;
+    }
+
+    .dashboard-container {
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 32px 40px 60px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .link {
+      color: var(--ink);
+      font-size: 12.5px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: var(--border-strong);
+      text-underline-offset: 3px;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .link:hover {
+      text-decoration-color: var(--ink);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      max-width: 380px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      animation: slideIn 0.25s ease-out;
+      cursor: pointer;
+      border: 1px solid;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .alert.error {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: rgba(156, 59, 46, 0.3);
+    }
+
+    .alert.success {
+      background: var(--success-bg);
+      color: var(--success);
+      border-color: rgba(47, 107, 76, 0.3);
+    }
+
+    .info-group {
+      margin-bottom: 18px;
+    }
+
+    .info-label {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 4px;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .search-box i.bx-search {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-soft);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .search-box input {
+      padding-left: 38px;
+      padding-right: 34px;
+    }
+
+    .search-box .clear-search {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-size: 17px;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .search-box .clear-search:hover {
+      color: var(--ink);
+      background: var(--surface-hover);
+    }
+
+    .search-meta {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 10px 2px 14px;
+    }
+
+    .empty-row td {
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 13px;
+      padding: 36px 14px !important;
+    }
+
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .user-table th,
+    .user-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .user-table th {
+      color: var(--ink-soft);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 10.5px;
+      letter-spacing: 0.07em;
+      font-family: var(--mono);
+    }
+
+    .role-badge {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 8px 3px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: var(--surface-2);
+      color: var(--ink-muted);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .role-badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ink-soft);
+    }
+
+    .role-badge.admin {
+      color: var(--ink);
+      border-color: var(--border-strong);
+    }
+
+    .role-badge.admin::before {
+      background: var(--ink);
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 17px;
+      padding: 6px;
+      border-radius: 5px;
+      display: inline-flex;
+      width: auto;
+      transition: 0.15s;
+    }
+
+    .icon-btn:hover {
+      color: var(--ink);
+      background: var(--surface-hover);
+    }
+
+    .icon-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 18, 0.5);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-content {
+      background: var(--surface);
+      padding: 28px;
+      border-radius: 10px;
+      width: 380px;
+      max-width: 90%;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 22px;
+      background: var(--surface-2);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mode-tab {
+      flex: 1;
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 7px 10px;
+      border-radius: 6px;
+      transition: 0.15s;
+    }
+
+    .mode-tab:hover {
+      color: var(--ink);
+    }
+
+    .mode-tab.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 1px 2px rgba(25, 25, 23, 0.08);
+      font-weight: 600;
+    }
   </style>
 </head>
 
@@ -154,17 +732,23 @@
 
         <!-- Tab Mode Login -->
         <div class="mode-tabs">
-          <div class="mode-tab" :class="loginMode === 'password' ? 'active' : ''" @click="loginMode = 'password'">Via Password</div>
-          <div class="mode-tab" :class="loginMode === 'otp' ? 'active' : ''" @click="loginMode = 'otp'; loginOtpRequested = false;">Via Kode OTP</div>
+          <div class="mode-tab" :class="loginMode === 'password' ? 'active' : ''" @click="loginMode = 'password'">Via
+            Password</div>
+          <div class="mode-tab" :class="loginMode === 'otp' ? 'active' : ''"
+            @click="loginMode = 'otp'; loginOtpRequested = false;">Via Kode OTP</div>
         </div>
 
         <!-- Mode Password -->
         <form x-show="loginMode === 'password'" @submit.prevent="reqLogin()">
-          <div class="form-group"><label>Email</label><input type="email" x-model="login.email" required oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')" oninput="this.setCustomValidity('')"></div>
+          <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+              x-model="login.email" required
+              oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
+              oninput="this.setCustomValidity('')"></div>
           <div class="form-group"><label>Password</label>
             <div class="password-wrapper">
               <input :type="showPwd.login ? 'text' : 'password'" x-model="login.password" required>
-              <i class="bx toggle-password" :class="showPwd.login ? 'bx-hide' : 'bx-show'" @click="showPwd.login = !showPwd.login"></i>
+              <i class="bx toggle-password" :class="showPwd.login ? 'bx-hide' : 'bx-show'"
+                @click="showPwd.login = !showPwd.login"></i>
             </div>
           </div>
           <button type="submit" :disabled="loading">Login</button>
@@ -173,17 +757,26 @@
         <!-- Mode OTP -->
         <div x-show="loginMode === 'otp'">
           <div x-show="!loginOtpRequested">
-            <div class="form-group"><label>Email</label><input type="email" x-model="login.email" required oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')" oninput="this.setCustomValidity('')"></div>
-            <div id="recaptcha-login" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe" data-theme="light" style="margin-bottom: 20px;"></div>
-            <button @click="reqLoginOtp()" :disabled="loading">Kirim OTP Login</button>
+            <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                x-model="login.email" required
+                oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
+                oninput="this.setCustomValidity('')"></div>
+            <div id="recaptcha-login" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe"
+              data-theme="light" style="margin-bottom: 20px;"></div>
+            <button @click="reqLoginOtp()" :disabled="loading">Minta kode OTP..</button>
           </div>
 
-          <div x-show="loginOtpRequested">
-            <p style="font-size: 12.5px; color: var(--success); margin-bottom: 16px; display:flex; align-items:center; gap:6px;"><i class='bx bx-check-circle'></i> OTP telah dikirim ke email Anda.</p>
-            <div class="form-group"><label>Masukkan OTP</label>
-              <input type="text" x-model="login.otp" maxlength="6" style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            </div>
-            <button @click="verifyLoginOtp()" :disabled="loading || login.otp.length !== 6">Masuk dengan OTP</button>
+          <div x-show=" loginOtpRequested">
+              <p
+                style="font-size: 12.5px; color: var(--success); margin-bottom: 16px; display:flex; align-items:center; gap:6px;">
+                <i class='bx bx-check-circle'></i> OTP telah dikirim ke email Anda.
+              </p>
+              <div class="form-group"><label>Masukkan OTP</label>
+                <input type="text" x-model="login.otp" maxlength="6"
+                  style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
+                  inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              </div>
+              <button @click="verifyLoginOtp()" :disabled="loading || login.otp.length !== 6">Masuk dengan OTP</button>
           </div>
         </div>
 
@@ -201,74 +794,100 @@
           <!-- Fields persis seperti sebelumnya -->
           <div class="form-group">
             <label>Foto Profil (Opsional)</label>
-            <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true" @dragleave.prevent="dragActive = false" @drop.prevent="handleFileDrop($event, 'reg')">
+            <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true"
+              @dragleave.prevent="dragActive = false" @drop.prevent="handleFileDrop($event, 'reg')">
               <input type="file" class="hidden-input" accept="image/*" @change="handleFileDrop($event, 'reg')">
               <i class='bx bx-cloud-upload' x-show="!reg.profile_picture"></i>
               <img :src="reg.profile_picture" x-show="reg.profile_picture" alt="Preview">
             </div>
             <div style="text-align: right; margin-top: 4px;" x-show="reg.profile_picture">
-              <span class="link" style="color: var(--danger); text-decoration-color: var(--danger);" @click="reg.profile_picture = ''">Hapus Foto</span>
+              <span class="link" style="color: var(--danger); text-decoration-color: var(--danger);"
+                @click="reg.profile_picture = ''">Hapus Foto</span>
             </div>
           </div>
-          <div class="form-group"><label>Email *</label><input type="email" x-model="reg.email" required oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')" oninput="this.setCustomValidity('')"></div>
+          <div class="form-group"><label>Email *</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+              x-model="reg.email" required
+              oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
+              oninput="this.setCustomValidity('')"></div>
           <div class="form-group"><label>Nama Lengkap *</label><input type="text" x-model="reg.name" required></div>
           <div class="grid-2">
             <div class="form-group"><label>Negara *</label>
               <select x-model="reg.country" @change="onCountryChange('reg')" required>
                 <option value="">Pilih Negara...</option>
-                <template x-for="c in globalCountries" :key="c"><option :value="c" x-text="c"></option></template>
+                <template x-for="c in globalCountries" :key="c">
+                  <option :value="c" x-text="c"></option>
+                </template>
               </select>
             </div>
             <div class="form-group"><label>Provinsi</label>
               <select x-model="reg.province" @change="onProvChange('reg')" :disabled="reg.country !== 'Indonesia'">
                 <option value="">Pilih Provinsi...</option>
-                <template x-for="p in provinces" :key="p.id"><option :value="p.name" x-text="p.name"></option></template>
+                <template x-for="p in provinces" :key="p.id">
+                  <option :value="p.name" x-text="p.name"></option>
+                </template>
               </select>
             </div>
           </div>
           <div class="form-group"><label>Kota / Kabupaten</label>
-            <select x-model="reg.city" @change="onCityChange('reg')" :disabled="reg.country !== 'Indonesia' || !reg.province || regCities.length === 0">
+            <select x-model="reg.city" @change="onCityChange('reg')"
+              :disabled="reg.country !== 'Indonesia' || !reg.province || regCities.length === 0">
               <option value="">Pilih Kota/Kabupaten...</option>
-              <template x-for="c in regCities" :key="c.id"><option :value="c.name" x-text="c.name"></option></template>
+              <template x-for="c in regCities" :key="c.id">
+                <option :value="c.name" x-text="c.name"></option>
+              </template>
             </select>
           </div>
           <div class="form-group"><label>Kecamatan</label>
             <select x-model="reg.district" :disabled="!reg.city || regDistricts.length === 0">
               <option value="">Pilih Kecamatan...</option>
-              <template x-for="d in regDistricts" :key="d.id"><option :value="d.name" x-text="d.name"></option></template>
+              <template x-for="d in regDistricts" :key="d.id">
+                <option :value="d.name" x-text="d.name"></option>
+              </template>
             </select>
           </div>
           <div class="form-group"><label>Password *</label>
             <div class="password-wrapper">
               <input :type="showPwd.reg ? 'text' : 'password'" x-model="reg.password" required>
-              <i class="bx toggle-password" :class="showPwd.reg ? 'bx-hide' : 'bx-show'" @click="showPwd.reg = !showPwd.reg"></i>
+              <i class="bx toggle-password" :class="showPwd.reg ? 'bx-hide' : 'bx-show'"
+                @click="showPwd.reg = !showPwd.reg"></i>
             </div>
           </div>
-          <div id="recaptcha-reg" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe" data-theme="light" style="margin-bottom: 20px;"></div>
+          <div id="recaptcha-reg" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe"
+            data-theme="light" style="margin-bottom: 20px;"></div>
           <button type="submit" :disabled="loading">Lanjutkan</button>
         </form>
-        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Batal / Kembali</span></div>
+        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Batal /
+            Kembali</span></div>
       </div>
 
       <!-- OTP Register -->
       <div x-show="view === 'otp-reg'">
         <h2>Cek Email Anda</h2>
-        <p class="subtitle">Kami telah mengirim OTP ke <span x-text="reg.email" style="color:var(--ink); font-weight:600;"></span></p>
+        <p class="subtitle">Kami telah mengirim OTP ke <span x-text="reg.email"
+            style="color:var(--ink); font-weight:600;"></span></p>
         <div class="form-group">
-          <input type="text" x-model="reg.otp" maxlength="6" style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          <input type="text" x-model="reg.otp" maxlength="6"
+            style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
+            inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <button @click="verifyRegister()" :disabled="loading || reg.otp.length !== 6">Verifikasi Akun</button>
-        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('register')">Batal</span></div>
+        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('register')">Batal</span>
+        </div>
       </div>
 
       <!-- Forgot Password -->
       <div x-show="view === 'forgot'">
         <h2>Pemulihan Akun</h2>
         <p class="subtitle">Masukkan email terdaftar Anda.</p>
-        <div class="form-group"><label>Email</label><input type="email" x-model="fgt.email" oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')" oninput="this.setCustomValidity('')"></div>
-        <div id="recaptcha-fgt" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe" data-theme="light" style="margin-bottom: 20px;"></div>
+        <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+            x-model="fgt.email"
+            oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
+            oninput="this.setCustomValidity('')"></div>
+        <div id="recaptcha-fgt" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe"
+          data-theme="light" style="margin-bottom: 20px;"></div>
         <button @click="reqForgot()" :disabled="loading">Kirim OTP Reset</button>
-        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Kembali</span></div>
+        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Kembali</span>
+        </div>
       </div>
 
       <!-- OTP Reset -->
@@ -276,16 +895,20 @@
         <h2>Buat Password Baru</h2>
         <p class="subtitle">Masukkan kode dari email dan sandi baru.</p>
         <div class="form-group"><label>Kode OTP</label>
-          <input type="text" x-model="fgt.otp" maxlength="6" style="letter-spacing:12px; font-weight:600; text-align:center; font-family: var(--mono);" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          <input type="text" x-model="fgt.otp" maxlength="6"
+            style="letter-spacing:12px; font-weight:600; text-align:center; font-family: var(--mono);"
+            inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="form-group"><label>Password Baru</label>
           <div class="password-wrapper">
             <input :type="showPwd.reset ? 'text' : 'password'" x-model="fgt.newPass">
-            <i class="bx toggle-password" :class="showPwd.reset ? 'bx-hide' : 'bx-show'" @click="showPwd.reset = !showPwd.reset"></i>
+            <i class="bx toggle-password" :class="showPwd.reset ? 'bx-hide' : 'bx-show'"
+              @click="showPwd.reset = !showPwd.reset"></i>
           </div>
         </div>
         <button @click="verifyReset()" :disabled="loading">Simpan Password</button>
-        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Batal</span></div>
+        <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Batal</span>
+        </div>
       </div>
     </div>
   </div>
@@ -294,10 +917,13 @@
   <div class="dash-layout" x-show="token && user">
     <aside class="sidebar" x-show="user">
       <div class="sidebar-header">
-        <img :src="user?.profile_picture || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`" alt="Pic">
+        <img
+          :src="user?.profile_picture || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`"
+          alt="Pic">
         <div>
           <h3 x-text="user?.name || 'Loading...'"></h3>
-          <span :class="user?.role === 'admin' ? 'role-badge admin' : 'role-badge'" x-text="user?.role" style="padding: 2px 6px 2px 5px; margin-top:4px;"></span>
+          <span :class="user?.role === 'admin' ? 'role-badge admin' : 'role-badge'" x-text="user?.role"
+            style="padding: 2px 6px 2px 5px; margin-top:4px;"></span>
         </div>
       </div>
       <div class="nav-menu">
@@ -308,7 +934,8 @@
           <i class='bx bx-shield'></i> Keamanan
         </div>
         <div style="margin: 12px 0; border-bottom: 1px solid var(--border);" x-show="user?.role === 'admin'"></div>
-        <div class="nav-item" :class="dashView === 'admin' ? 'active' : ''" x-show="user?.role === 'admin'" @click="dashView = 'admin'; loadAdminUsers()">
+        <div class="nav-item" :class="dashView === 'admin' ? 'active' : ''" x-show="user?.role === 'admin'"
+          @click="dashView = 'admin'; loadAdminUsers()">
           <i class='bx bx-group'></i> Kelola Pengguna
         </div>
         <div style="flex: 1;"></div>
@@ -320,9 +947,15 @@
 
     <main class="main-content">
       <div class="content-header">
-        <div class="eyebrow" x-text="user?.role === 'admin' && dashView === 'admin' ? 'ADMIN // USERS' : 'ACCOUNT // ' + dashView.toUpperCase()"></div>
-        <h2 x-text="dashView === 'profile' ? 'Informasi Pribadi' : dashView === 'security' ? 'Keamanan Akun' : 'Manajemen Pengguna'"></h2>
-        <p class="subtitle" x-text="dashView === 'profile' ? 'Lihat dan kelola data profil Anda.' : dashView === 'security' ? 'Ganti password atau hapus akun Anda secara permanen.' : 'Kontrol penuh atas data pengguna dalam sistem.'"></p>
+        <div class="eyebrow"
+          x-text="user?.role === 'admin' && dashView === 'admin' ? 'ADMIN // USERS' : 'ACCOUNT // ' + dashView.toUpperCase()">
+        </div>
+        <h2
+          x-text="dashView === 'profile' ? 'Informasi Pribadi' : dashView === 'security' ? 'Keamanan Akun' : 'Manajemen Pengguna'">
+        </h2>
+        <p class="subtitle"
+          x-text="dashView === 'profile' ? 'Lihat dan kelola data profil Anda.' : dashView === 'security' ? 'Ganti password atau hapus akun Anda secara permanen.' : 'Kontrol penuh atas data pengguna dalam sistem.'">
+        </p>
       </div>
       <div class="dashboard-container">
 
@@ -331,33 +964,54 @@
           <div class="card">
             <!-- Read Only Mode -->
             <div x-show="!editProfileMode">
-              <div style="display:flex; align-items:center; gap:22px; margin-bottom:30px; padding-bottom:26px; border-bottom:1px solid var(--border);">
-                <img :src="user?.profile_picture || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`" style="width:88px; height:88px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">
+              <div
+                style="display:flex; align-items:center; gap:22px; margin-bottom:30px; padding-bottom:26px; border-bottom:1px solid var(--border);">
+                <img
+                  :src="user?.profile_picture || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`"
+                  style="width:88px; height:88px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">
                 <div>
                   <h3 style="font-size: 19px; margin-bottom:4px;" x-text="user?.name"></h3>
                   <p style="color:var(--ink-muted); font-size:13.5px;" x-text="user?.email"></p>
                 </div>
               </div>
               <div class="grid-2">
-                <div class="info-group"><div class="info-label">Negara</div><div class="info-value" x-text="user?.country || '-'"></div></div>
-                <div class="info-group"><div class="info-label">Provinsi</div><div class="info-value" x-text="user?.province || '-'"></div></div>
-                <div class="info-group"><div class="info-label">Kota / Kabupaten</div><div class="info-value" x-text="user?.city || '-'"></div></div>
-                <div class="info-group"><div class="info-label">Kecamatan</div><div class="info-value" x-text="user?.district || '-'"></div></div>
-                <div class="info-group"><div class="info-label">Role</div><div class="info-value" style="text-transform: capitalize;" x-text="user?.role"></div></div>
+                <div class="info-group">
+                  <div class="info-label">Negara</div>
+                  <div class="info-value" x-text="user?.country || '-'"></div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">Provinsi</div>
+                  <div class="info-value" x-text="user?.province || '-'"></div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">Kota / Kabupaten</div>
+                  <div class="info-value" x-text="user?.city || '-'"></div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">Kecamatan</div>
+                  <div class="info-value" x-text="user?.district || '-'"></div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">Role</div>
+                  <div class="info-value" style="text-transform: capitalize;" x-text="user?.role"></div>
+                </div>
               </div>
-              <button class="btn-outline" style="margin-top: 12px; width:auto; padding: 10px 22px;" @click="editProfileMode = true"><i class='bx bx-edit'></i> Edit Profil</button>
+              <button class="btn-outline" style="margin-top: 12px; width:auto; padding: 10px 22px;"
+                @click="editProfileMode = true"><i class='bx bx-edit'></i> Edit Profil</button>
             </div>
 
             <!-- Edit Mode -->
             <form x-show="editProfileMode" @submit.prevent="updateProfile()">
               <div class="form-group"><label>Foto Profil</label>
-                <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true" @dragleave.prevent="dragActive = false" @drop.prevent="handleFileDrop($event, 'prof')">
+                <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true"
+                  @dragleave.prevent="dragActive = false" @drop.prevent="handleFileDrop($event, 'prof')">
                   <input type="file" class="hidden-input" accept="image/*" @change="handleFileDrop($event, 'prof')">
                   <i class='bx bx-cloud-upload' x-show="!prof.profile_picture"></i>
                   <img :src="prof.profile_picture" x-show="prof.profile_picture" alt="Preview">
                 </div>
                 <div style="text-align: right; margin-top: 4px;" x-show="prof.profile_picture">
-                  <span class="link" style="color: var(--danger); text-decoration-color: var(--danger);" @click="prof.profile_picture = ''">Hapus Foto</span>
+                  <span class="link" style="color: var(--danger); text-decoration-color: var(--danger);"
+                    @click="prof.profile_picture = ''">Hapus Foto</span>
                 </div>
               </div>
               <div class="form-group"><label>Nama Lengkap</label><input type="text" x-model="prof.name" required></div>
@@ -365,31 +1019,43 @@
                 <div class="form-group"><label>Negara</label>
                   <select x-model="prof.country" @change="onCountryChange('prof')" required>
                     <option value="">Pilih Negara...</option>
-                    <template x-for="c in globalCountries" :key="c"><option :value="c" x-text="c"></option></template>
+                    <template x-for="c in globalCountries" :key="c">
+                      <option :value="c" x-text="c"></option>
+                    </template>
                   </select>
                 </div>
                 <div class="form-group"><label>Provinsi</label>
-                  <select x-model="prof.province" @change="onProvChange('prof')" :disabled="prof.country !== 'Indonesia'">
+                  <select x-model="prof.province" @change="onProvChange('prof')"
+                    :disabled="prof.country !== 'Indonesia'">
                     <option value="">Pilih Provinsi...</option>
-                    <template x-for="p in provinces" :key="p.id"><option :value="p.name" x-text="p.name"></option></template>
+                    <template x-for="p in provinces" :key="p.id">
+                      <option :value="p.name" x-text="p.name"></option>
+                    </template>
                   </select>
                 </div>
               </div>
               <div class="form-group"><label>Kota / Kabupaten</label>
-                <select x-model="prof.city" @change="onCityChange('prof')" :disabled="prof.country !== 'Indonesia' || !prof.province || profCities.length === 0">
+                <select x-model="prof.city" @change="onCityChange('prof')"
+                  :disabled="prof.country !== 'Indonesia' || !prof.province || profCities.length === 0">
                   <option value="">Pilih Kota/Kabupaten...</option>
-                  <template x-for="c in profCities" :key="c.id"><option :value="c.name" x-text="c.name"></option></template>
+                  <template x-for="c in profCities" :key="c.id">
+                    <option :value="c.name" x-text="c.name"></option>
+                  </template>
                 </select>
               </div>
               <div class="form-group"><label>Kecamatan</label>
                 <select x-model="prof.district" :disabled="!prof.city || profDistricts.length === 0">
                   <option value="">Pilih Kecamatan...</option>
-                  <template x-for="d in profDistricts" :key="d.id"><option :value="d.name" x-text="d.name"></option></template>
+                  <template x-for="d in profDistricts" :key="d.id">
+                    <option :value="d.name" x-text="d.name"></option>
+                  </template>
                 </select>
               </div>
               <div class="flex-between" style="margin-top: 28px;">
-                <button type="button" class="btn-outline" style="width:auto; padding:10px 22px;" @click="editProfileMode = false">Batal</button>
-                <button type="submit" :disabled="loading" style="width:auto; padding: 11px 28px;">Simpan Perubahan</button>
+                <button type="button" class="btn-outline" style="width:auto; padding:10px 22px;"
+                  @click="editProfileMode = false">Batal</button>
+                <button type="submit" :disabled="loading" style="width:auto; padding: 11px 28px;">Simpan
+                  Perubahan</button>
               </div>
             </form>
           </div>
@@ -402,15 +1068,18 @@
             <h3>Ubah Password</h3>
 
             <div class="mode-tabs">
-              <div class="mode-tab" :class="pwdUpdateMethod === 'password' ? 'active' : ''" @click="pwdUpdateMethod = 'password'">Sandi Lama</div>
-              <div class="mode-tab" :class="pwdUpdateMethod === 'otp' ? 'active' : ''" @click="pwdUpdateMethod = 'otp'; prof.otp = ''; pwdOtpRequested = false;">Gunakan OTP</div>
+              <div class="mode-tab" :class="pwdUpdateMethod === 'password' ? 'active' : ''"
+                @click="pwdUpdateMethod = 'password'">Sandi Lama</div>
+              <div class="mode-tab" :class="pwdUpdateMethod === 'otp' ? 'active' : ''"
+                @click="pwdUpdateMethod = 'otp'; prof.otp = ''; pwdOtpRequested = false;">Gunakan OTP</div>
             </div>
 
             <form @submit.prevent="updatePassword()">
               <div class="form-group"><label>Password Baru</label>
                 <div class="password-wrapper">
                   <input :type="showPwd.profNew ? 'text' : 'password'" x-model="prof.newPass" required>
-                  <i class="bx toggle-password" :class="showPwd.profNew ? 'bx-hide' : 'bx-show'" @click="showPwd.profNew = !showPwd.profNew"></i>
+                  <i class="bx toggle-password" :class="showPwd.profNew ? 'bx-hide' : 'bx-show'"
+                    @click="showPwd.profNew = !showPwd.profNew"></i>
                 </div>
               </div>
 
@@ -418,8 +1087,10 @@
               <div class="form-group" x-show="pwdUpdateMethod === 'password'">
                 <label>Password Saat Ini</label>
                 <div class="password-wrapper">
-                  <input :type="showPwd.profCur ? 'text' : 'password'" x-model="prof.curPass" :required="pwdUpdateMethod === 'password'">
-                  <i class="bx toggle-password" :class="showPwd.profCur ? 'bx-hide' : 'bx-show'" @click="showPwd.profCur = !showPwd.profCur"></i>
+                  <input :type="showPwd.profCur ? 'text' : 'password'" x-model="prof.curPass"
+                    :required="pwdUpdateMethod === 'password'">
+                  <i class="bx toggle-password" :class="showPwd.profCur ? 'bx-hide' : 'bx-show'"
+                    @click="showPwd.profCur = !showPwd.profCur"></i>
                 </div>
               </div>
 
@@ -427,30 +1098,41 @@
               <div class="form-group" x-show="pwdUpdateMethod === 'otp'">
                 <label>Kode OTP</label>
                 <div x-show="!pwdOtpRequested">
-                  <button type="button" class="btn-outline" @click="reqPwdOtp()" :disabled="loading">Kirim OTP ke Email</button>
+                  <button type="button" class="btn-outline" @click="reqPwdOtp()" :disabled="loading">Kirim OTP ke
+                    Email</button>
                 </div>
                 <div x-show="pwdOtpRequested">
-                  <input type="text" x-model="prof.otp" maxlength="6" style="text-align:center; letter-spacing:12px; font-weight:600; font-family: var(--mono);" inputmode="numeric" placeholder="------" :required="pwdUpdateMethod === 'otp'">
+                  <input type="text" x-model="prof.otp" maxlength="6"
+                    style="text-align:center; letter-spacing:12px; font-weight:600; font-family: var(--mono);"
+                    inputmode="numeric" placeholder="------" :required="pwdUpdateMethod === 'otp'">
                 </div>
               </div>
 
-              <button type="submit" style="width:auto; padding:10px 24px; margin-top: 14px;" :disabled="loading || (pwdUpdateMethod === 'otp' && !pwdOtpRequested)">Update Password</button>
+              <button type="submit" style="width:auto; padding:10px 24px; margin-top: 14px;"
+                :disabled="loading || (pwdUpdateMethod === 'otp' && !pwdOtpRequested)">Update Password</button>
             </form>
           </div>
 
           <div class="card" style="border-color: rgba(156,59,46,0.25);">
             <h3 style="color: var(--danger);">Zona Berbahaya</h3>
-            <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 16px;">Menghapus akun akan menghilangkan seluruh data Anda secara permanen.</p>
+            <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 16px;">Menghapus akun akan menghilangkan
+              seluruh data Anda secara permanen.</p>
             <div x-show="!del.requested">
-              <button class="btn-danger" style="width:auto; padding:10px 22px;" @click="reqDeleteAccount()" :disabled="loading">Minta Kode Hapus Akun</button>
+              <button class="btn-danger" style="width:auto; padding:10px 22px;" @click="reqDeleteAccount()"
+                :disabled="loading">Minta Kode Hapus Akun</button>
             </div>
-            <div x-show="del.requested" style="background: var(--danger-bg); padding: 20px; border-radius: 8px; border: 1px solid rgba(156,59,46,0.2);">
+            <div x-show="del.requested"
+              style="background: var(--danger-bg); padding: 20px; border-radius: 8px; border: 1px solid rgba(156,59,46,0.2);">
               <div class="form-group"><label style="color: var(--danger);">Masukkan OTP Hapus Akun</label>
-                <input type="text" x-model="del.otp" maxlength="6" style="letter-spacing: 8px; text-align: center; font-size:18px; font-weight:600; font-family: var(--mono);" inputmode="numeric">
+                <input type="text" x-model="del.otp" maxlength="6"
+                  style="letter-spacing: 8px; text-align: center; font-size:18px; font-weight:600; font-family: var(--mono);"
+                  inputmode="numeric">
               </div>
               <div class="flex-between">
-                <span class="link" style="color: var(--ink-muted); text-decoration-color: var(--border-strong);" @click="del.requested = false">Batal</span>
-                <button class="btn-danger" style="width: auto; padding: 10px 22px;" @click="verifyDeleteAccount()" :disabled="del.otp.length !== 6 || loading">Hapus Permanen</button>
+                <span class="link" style="color: var(--ink-muted); text-decoration-color: var(--border-strong);"
+                  @click="del.requested = false">Batal</span>
+                <button class="btn-danger" style="width: auto; padding: 10px 22px;" @click="verifyDeleteAccount()"
+                  :disabled="del.otp.length !== 6 || loading">Hapus Permanen</button>
               </div>
             </div>
           </div>
@@ -459,10 +1141,22 @@
         <!-- Admin View -->
         <div x-show="dashView === 'admin' && user?.role === 'admin'">
           <div class="card">
+            <div class="search-box">
+              <i class='bx bx-search'></i>
+              <input type="text" x-model="adminSearch" @input="onAdminSearchInput()"
+                placeholder="Cari email, nama, lokasi, atau role...">
+              <i class='bx bx-x clear-search' x-show="adminSearch" @click="clearAdminSearch()"></i>
+            </div>
+            <p class="search-meta" x-show="adminSearch" x-text="adminUsers.length + ' pengguna ditemukan'"></p>
             <div class="table-wrap">
               <table class="user-table">
                 <thead>
-                  <tr><th>Email</th><th>Nama & Lokasi</th><th>Role</th><th style="text-align: right;">Aksi</th></tr>
+                  <tr>
+                    <th>Email</th>
+                    <th>Nama & Lokasi</th>
+                    <th>Role</th>
+                    <th style="text-align: right;">Aksi</th>
+                  </tr>
                 </thead>
                 <tbody>
                   <template x-for="u in adminUsers" :key="u.id">
@@ -471,53 +1165,72 @@
                       <template x-if="editAdminUserId !== u.id">
                         <td>
                           <div x-text="u.name || '-'" style="font-weight: 500;"></div>
-                          <div style="font-size: 11px; color: var(--ink-muted);" x-text="[u.district, u.city, u.province, u.country].filter(Boolean).join(', ') || '-'"></div>
+                          <div style="font-size: 11px; color: var(--ink-muted);"
+                            x-text="[u.district, u.city, u.province, u.country].filter(Boolean).join(', ') || '-'">
+                          </div>
                         </td>
                       </template>
                       <template x-if="editAdminUserId !== u.id">
-                        <td><span :class="u.role === 'admin' ? 'role-badge admin' : 'role-badge'" x-text="u.role"></span></td>
+                        <td><span :class="u.role === 'admin' ? 'role-badge admin' : 'role-badge'"
+                            x-text="u.role"></span></td>
                       </template>
                       <template x-if="editAdminUserId !== u.id">
                         <td style="text-align: right; min-width: 140px;">
                           <!-- PERBAIKAN: Sembunyikan semua opsi admin (kecuali diri sendiri) -->
-                          <button class="icon-btn" title="Edit Data" x-show="u.role !== 'admin' || u.id === user.id" @click="startEdit(u)"><i class='bx bx-edit'></i></button>
-                          <button class="icon-btn" title="Reset Sandi" x-show="u.role !== 'admin'" @click="openAdminModal(u)"><i class='bx bx-key'></i></button>
-                          <button class="icon-btn" style="color: var(--danger);" title="Hapus" x-show="u.role !== 'admin'" @click="adminDeleteUser(u.id)"><i class='bx bx-trash'></i></button>
+                          <button class="icon-btn" title="Edit Data" x-show="u.role !== 'admin' || u.id === user.id"
+                            @click="startEdit(u)"><i class='bx bx-edit'></i></button>
+                          <button class="icon-btn" title="Reset Sandi" x-show="u.role !== 'admin'"
+                            @click="openAdminModal(u)"><i class='bx bx-key'></i></button>
+                          <button class="icon-btn" style="color: var(--danger);" title="Hapus"
+                            x-show="u.role !== 'admin'" @click="adminDeleteUser(u.id)"><i
+                              class='bx bx-trash'></i></button>
                         </td>
                       </template>
                       <!-- Edit Mode Row -->
-                    <template x-if="editAdminUserId === u.id">
-                      <td>
-                        <input type="text" x-model="editAdminForm.name" placeholder="Nama Lengkap" style="padding: 6px; font-size: 13px; margin-bottom: 6px; width: 100%;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
-                          <!-- Dropdown Provinsi Admin -->
-                          <select x-model="editAdminForm.province" @change="editAdminForm.city = ''; onAdminProvChange(editAdminForm.province)" style="padding: 6px; font-size: 13px;">
-                            <option value="">Pilih Provinsi...</option>
-                            <template x-for="p in provinces" :key="p.id">
-                              <option :value="p.name" x-text="p.name" :selected="p.name === editAdminForm.province"></option>
-                            </template>
-                          </select>
-
-                          <!-- Dropdown Kota Admin -->
-                          <select x-model="editAdminForm.city" @change="editAdminForm.district = ''; onAdminCityChange(editAdminForm.city)" :disabled="!editAdminForm.province || adminCities.length === 0" style="padding: 6px; font-size: 13px;">
-                            <option value="">Pilih Kota...</option>
-                            <template x-for="c in adminCities" :key="c.id">
-                              <option :value="c.name" x-text="c.name" :selected="c.name === editAdminForm.city"></option>
-                            </template>
-                          </select>
-                        </div>
-                        <!-- Dropdown Kecamatan Admin -->
-                        <select x-model="editAdminForm.district" :disabled="!editAdminForm.city || adminDistricts.length === 0" style="padding: 6px; font-size: 13px; width: 100%;">
-                          <option value="">Pilih Kecamatan...</option>
-                          <template x-for="d in adminDistricts" :key="d.id">
-                            <option :value="d.name" x-text="d.name" :selected="d.name === editAdminForm.district"></option>
-                          </template>
-                        </select>
-                      </td>
-                    </template>
                       <template x-if="editAdminUserId === u.id">
                         <td>
-                          <select x-model="editAdminForm.role" style="padding: 6px; font-size: 13px;" :disabled="u.id === user.id">
+                          <input type="text" x-model="editAdminForm.name" placeholder="Nama Lengkap"
+                            style="padding: 6px; font-size: 13px; margin-bottom: 6px; width: 100%;">
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
+                            <!-- Dropdown Provinsi Admin -->
+                            <select x-model="editAdminForm.province"
+                              @change="editAdminForm.city = ''; onAdminProvChange(editAdminForm.province)"
+                              style="padding: 6px; font-size: 13px;">
+                              <option value="">Pilih Provinsi...</option>
+                              <template x-for="p in provinces" :key="p.id">
+                                <option :value="p.name" x-text="p.name" :selected="p.name === editAdminForm.province">
+                                </option>
+                              </template>
+                            </select>
+
+                            <!-- Dropdown Kota Admin -->
+                            <select x-model="editAdminForm.city"
+                              @change="editAdminForm.district = ''; onAdminCityChange(editAdminForm.city)"
+                              :disabled="!editAdminForm.province || adminCities.length === 0"
+                              style="padding: 6px; font-size: 13px;">
+                              <option value="">Pilih Kota...</option>
+                              <template x-for="c in adminCities" :key="c.id">
+                                <option :value="c.name" x-text="c.name" :selected="c.name === editAdminForm.city">
+                                </option>
+                              </template>
+                            </select>
+                          </div>
+                          <!-- Dropdown Kecamatan Admin -->
+                          <select x-model="editAdminForm.district"
+                            :disabled="!editAdminForm.city || adminDistricts.length === 0"
+                            style="padding: 6px; font-size: 13px; width: 100%;">
+                            <option value="">Pilih Kecamatan...</option>
+                            <template x-for="d in adminDistricts" :key="d.id">
+                              <option :value="d.name" x-text="d.name" :selected="d.name === editAdminForm.district">
+                              </option>
+                            </template>
+                          </select>
+                        </td>
+                      </template>
+                      <template x-if="editAdminUserId === u.id">
+                        <td>
+                          <select x-model="editAdminForm.role" style="padding: 6px; font-size: 13px;"
+                            :disabled="u.id === user.id">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                           </select>
@@ -525,12 +1238,17 @@
                       </template>
                       <template x-if="editAdminUserId === u.id">
                         <td style="text-align: right; min-width: 100px;">
-                          <button class="icon-btn" style="color: var(--success);" title="Simpan" @click="saveEdit(u.id)"><i class='bx bx-check'></i></button>
-                          <button class="icon-btn" title="Batal" @click="editAdminUserId = null"><i class='bx bx-x'></i></button>
+                          <button class="icon-btn" style="color: var(--success);" title="Simpan"
+                            @click="saveEdit(u.id)"><i class='bx bx-check'></i></button>
+                          <button class="icon-btn" title="Batal" @click="editAdminUserId = null"><i
+                              class='bx bx-x'></i></button>
                         </td>
                       </template>
                     </tr>
                   </template>
+                  <tr class="empty-row" x-show="adminSearch && adminUsers.length === 0">
+                    <td colspan="4">Tidak ada pengguna yang cocok dengan "<span x-text="adminSearch"></span>".</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -544,13 +1262,16 @@
   <div class="modal-overlay" x-show="adminModal.show" style="display:none;" x-transition>
     <div class="modal-content" @click.stop>
       <h3>Reset Password Pengguna</h3>
-      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Masukkan sandi baru untuk <strong x-text="adminModal.user?.email" style="color:var(--ink);"></strong></p>
+      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Masukkan sandi baru untuk <strong
+          x-text="adminModal.user?.email" style="color:var(--ink);"></strong></p>
       <div class="form-group">
         <input type="text" placeholder="Password Baru" x-model="adminModal.newPass">
       </div>
       <div class="flex-between" style="margin-top:24px;">
-        <button class="btn-outline" style="width:auto; padding:8px 16px;" @click="adminModal.show = false">Batal</button>
-        <button style="width:auto; padding:8px 16px;" @click="submitAdminPass()" :disabled="!adminModal.newPass">Update Password</button>
+        <button class="btn-outline" style="width:auto; padding:8px 16px;"
+          @click="adminModal.show = false">Batal</button>
+        <button style="width:auto; padding:8px 16px;" @click="submitAdminPass()" :disabled="!adminModal.newPass">Update
+          Password</button>
       </div>
     </div>
   </div>
@@ -563,36 +1284,37 @@
         token: localStorage.getItem('tk') || null,
         user: null, view: 'login', dashView: 'profile', editProfileMode: false,
         loading: false, dragActive: false,
-        
+
         loginMode: 'password',
         loginOtpRequested: false,
-        
+
         pwdUpdateMethod: 'password',
         pwdOtpRequested: false,
 
-        alert: { show: false, msg: '', type: '' },
-        showPwd: { login: false, reg: false, reset: false, profNew: false, profCur: false },
-        
+        alert: {show: false, msg: '', type: ''},
+        showPwd: {login: false, reg: false, reset: false, profNew: false, profCur: false},
+
         globalCountries: [], provinces: [], regCities: [], profCities: [],
         regDistricts: [], profDistricts: [],
-        login: { email: '', password: '', otp: '' },
-        reg: { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: '' },
-        fgt: { email: '', otp: '', newPass: '' },
-        prof: { name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', newPass: '', curPass: '', otp: '' },
-        del: { requested: false, otp: '' },
-        
-        adminUsers: [], editAdminUserId: null, editAdminForm: { name: '', role: '', province: '', country: '', city: '', district: ''},
+        login: {email: '', password: '', otp: ''},
+        reg: {email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: ''},
+        fgt: {email: '', otp: '', newPass: ''},
+        prof: {name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', newPass: '', curPass: '', otp: ''},
+        del: {requested: false, otp: ''},
+
+        adminUsers: [], editAdminUserId: null, editAdminForm: {name: '', role: '', province: '', country: '', city: '', district: ''},
         adminCities: [], adminDistricts: [],
-        adminModal: { show: false, user: null, newPass: '' },
+        adminModal: {show: false, user: null, newPass: ''},
+        adminSearch: '', adminSearchTimer: null,
 
         async initApp() {
           this.$watch('dashView', () => this.resetDashState());
-          this.$watch('editProfileMode', (val) => { if(!val) this.syncProfileForm(); });
+          this.$watch('editProfileMode', (val) => {if (!val) this.syncProfileForm();});
           await this.loadCountries();
           await this.loadProvinces();
           if (this.token) {
-            try { await this.loadMyProfile(); } 
-            catch(e) { this.logout(); }
+            try {await this.loadMyProfile();}
+            catch (e) {this.logout();}
           }
         },
 
@@ -606,36 +1328,38 @@
           this.pwdUpdateMethod = 'password';
           this.del.requested = false;
           this.del.otp = '';
-          this.showPwd = { login: false, reg: false, reset: false, profNew: false, profCur: false };
+          this.showPwd = {login: false, reg: false, reset: false, profNew: false, profCur: false};
+          this.adminSearch = '';
+          this.editAdminUserId = null;
           this.syncProfileForm();
         },
 
         // Pembersihan State Halaman Auth
         resetAuthState() {
-          this.login = { email: '', password: '', otp: '' };
-          this.reg = { email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: '' };
-          this.fgt = { email: '', otp: '', newPass: '' };
+          this.login = {email: '', password: '', otp: ''};
+          this.reg = {email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: ''};
+          this.fgt = {email: '', otp: '', newPass: ''};
           this.regCities = []; this.regDistricts = [];
           this.loginOtpRequested = false;
           this.loginMode = 'password';
-          this.showPwd = { login: false, reg: false, reset: false, profNew: false, profCur: false };
+          this.showPwd = {login: false, reg: false, reset: false, profNew: false, profCur: false};
           // Reset ketiga widget reCAPTCHA (login-otp, register, forgot) berdasarkan urutan render di DOM
-          [0, 1, 2].forEach((id) => { try { grecaptcha.reset(id); } catch(e) {} });
+          [0, 1, 2].forEach((id) => {try {grecaptcha.reset(id);} catch (e) { } });
         },
 
         // Sinkronisasi ulang data diri ke form edit
         async syncProfileForm() {
-          if(this.user) {
+          if (this.user) {
             this.prof.name = this.user.name || '';
             this.prof.country = this.user.country || 'Indonesia';
             this.prof.province = this.user.province || '';
             this.prof.city = this.user.city || '';
             this.prof.district = this.user.district || '';
             this.prof.profile_picture = this.user.profile_picture || '';
-            if(this.prof.province) {
+            if (this.prof.province) {
               await this.onProvChange('prof');
               this.prof.city = this.user.city || '';
-              if(this.prof.city) {
+              if (this.prof.city) {
                 await this.onCityChange('prof');
                 this.prof.district = this.user.district || '';
               }
@@ -643,56 +1367,55 @@
           }
         },
 
-        setView(v, doReset = true) { this.view = v; this.alert.show = false; if (doReset) this.resetAuthState(); },
-        triggerAlert(msg, type='error') {
-          this.alert = { show: true, msg, type };
-          setTimeout(() => { this.alert.show = false; }, 5000);
+        setView(v, doReset = true) {this.view = v; this.alert.show = false; if (doReset) this.resetAuthState();},
+        triggerAlert(msg, type = 'error') {
+          this.alert = {show: true, msg, type};
+          setTimeout(() => {this.alert.show = false;}, 5000);
         },
 
-        async apiCall(path, method, body, auth=false) {
+        async apiCall(path, method, body, auth = false) {
           this.alert.show = false; this.loading = true;
           try {
-            const headers = { "Content-Type": "application/json" };
+            const headers = {"Content-Type": "application/json"};
             if (auth) headers["Authorization"] = "Bearer " + this.token;
-            const opts = { method, headers };
+            const opts = {method, headers};
             if (body) opts.body = JSON.stringify(body);
-            
+
             const r = await fetch(API + path, opts);
             const d = await r.json();
 
-            if (r.status === 401) { this.logout(); throw new Error(d.detail || "Sesi berakhir."); }
+            if (r.status === 401) {this.logout(); throw new Error(d.detail || "Sesi berakhir.");}
             if (r.status === 403) throw new Error(d.detail || "Akses ditolak.");
-            
+
             if (r.status === 422) {
               let msg = d.detail[0]?.msg || "Format input tidak valid.";
               // Hapus awalan "Value error, " bawaan sistem Pydantic secara otomatis
               msg = msg.replace(/^Value error,\s*/i, "");
               throw new Error(msg);
             }
-            
+
             if (!r.ok) throw new Error(d.detail || "Terjadi kesalahan server.");
             return d;
-          } catch(e) {
+          } catch (e) {
             if (e.name === "TypeError" && e.message === "Failed to fetch") {
-                this.triggerAlert("Gagal terhubung ke server. Periksa koneksi backend Anda.", 'error');
-                throw new Error("Koneksi gagal");
+              this.triggerAlert("Gagal terhubung ke server. Periksa koneksi backend Anda.", 'error');
+              throw new Error("Koneksi gagal");
             }
             this.triggerAlert(e.message, 'error');
             throw e;
-          } finally { this.loading = false; }
+          } finally {this.loading = false;}
         },
 
-        // --- Sisa fungsi logika API tetap sama ---
         handleFileDrop(e, targetObj) {
           this.dragActive = false;
           const file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-          if(!file) return;
-          if(!file.type.startsWith('image/')) return this.triggerAlert('Hanya file gambar yang diperbolehkan');
-          if(file.size > 2 * 1024 * 1024) return this.triggerAlert('Maksimal 2MB');
-          
+          if (!file) return;
+          if (!file.type.startsWith('image/')) return this.triggerAlert('Hanya file gambar yang diperbolehkan');
+          if (file.size > 2 * 1024 * 1024) return this.triggerAlert('Maksimal 2MB');
+
           const reader = new FileReader();
           reader.onload = (ev) => {
-            if(targetObj === 'reg') this.reg.profile_picture = ev.target.result;
+            if (targetObj === 'reg') this.reg.profile_picture = ev.target.result;
             else this.prof.profile_picture = ev.target.result;
           };
           reader.readAsDataURL(file);
@@ -703,96 +1426,96 @@
             let r = await fetch('https://restcountries.com/v3.1/all?fields=name');
             let data = await r.json();
             this.globalCountries = data.map(c => c.name.common).sort();
-          } catch(e) { this.globalCountries = ['Indonesia']; }
+          } catch (e) {this.globalCountries = ['Indonesia'];}
         },
         async loadProvinces() {
           try {
             let r = await fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
             this.provinces = await r.json();
-          } catch(e) {}
+          } catch (e) { }
         },
         onCountryChange(targetObj) {
           let t = targetObj === 'reg' ? this.reg : this.prof;
-          if (t.country !== 'Indonesia') { t.province = ''; t.city = ''; t.district = ''; }
+          if (t.country !== 'Indonesia') {t.province = ''; t.city = ''; t.district = '';}
         },
         async onProvChange(targetObj) {
           let provName = targetObj === 'reg' ? this.reg.province : this.prof.province;
-          if(!provName) return;
+          if (!provName) return;
           let prov = this.provinces.find(x => x.name === provName);
-          if(!prov) return;
+          if (!prov) return;
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
             let cities = await r.json();
-            if (targetObj === 'reg') { this.regCities = cities; this.reg.city = ''; this.reg.district = ''; this.regDistricts = []; } 
-            else { this.profCities = cities; this.prof.city = ''; this.prof.district = ''; this.profDistricts = []; }
-          } catch(e) {}
+            if (targetObj === 'reg') {this.regCities = cities; this.reg.city = ''; this.reg.district = ''; this.regDistricts = [];}
+            else {this.profCities = cities; this.prof.city = ''; this.prof.district = ''; this.profDistricts = [];}
+          } catch (e) { }
         },
         async onCityChange(targetObj) {
           let cityName = targetObj === 'reg' ? this.reg.city : this.prof.city;
           let cities = targetObj === 'reg' ? this.regCities : this.profCities;
-          if(!cityName) return;
+          if (!cityName) return;
           let city = cities.find(x => x.name === cityName);
-          if(!city) return;
+          if (!city) return;
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
             let districts = await r.json();
-            if (targetObj === 'reg') { this.regDistricts = districts; this.reg.district = ''; } 
-            else { this.profDistricts = districts; this.prof.district = ''; }
-          } catch(e) {}
+            if (targetObj === 'reg') {this.regDistricts = districts; this.reg.district = '';}
+            else {this.profDistricts = districts; this.prof.district = '';}
+          } catch (e) { }
         },
 
         // AUTH API
         async reqLogin() {
           const res = await this.apiCall('/auth/login', 'POST', this.login);
           this.token = res.access_token; localStorage.setItem('tk', this.token);
-          this.login.password = ''; 
-          try { await this.loadMyProfile(); this.triggerAlert("Berhasil login.", "success"); } catch(e) { this.logout(); }
+          this.login.password = '';
+          try {await this.loadMyProfile(); this.triggerAlert("Berhasil login.", "success");} catch (e) {this.logout();}
         },
         async reqLoginOtp() {
           const recaptchaToken = document.querySelector('#recaptcha-login [name="g-recaptcha-response"]')?.value;
-          if(!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
-          await this.apiCall('/auth/login/otp/request', 'POST', { email: this.login.email, recaptcha_token: recaptchaToken });
+          if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
+          await this.apiCall('/auth/login/otp/request', 'POST', {email: this.login.email, recaptcha_token: recaptchaToken});
           this.loginOtpRequested = true;
         },
         async verifyLoginOtp() {
-          const res = await this.apiCall('/auth/login/otp/verify', 'POST', { email: this.login.email, otp: this.login.otp });
+          const res = await this.apiCall('/auth/login/otp/verify', 'POST', {email: this.login.email, otp: this.login.otp});
           this.token = res.access_token; localStorage.setItem('tk', this.token);
-          this.login.otp = ''; 
-          try { await this.loadMyProfile(); this.triggerAlert("Berhasil login via OTP.", "success"); } catch(e) { this.logout(); }
+          this.login.otp = '';
+          try {await this.loadMyProfile(); this.triggerAlert("Berhasil login via OTP.", "success");} catch (e) {this.logout();}
         },
 
         async reqRegister() {
           const recaptchaToken = document.querySelector('#recaptcha-reg [name="g-recaptcha-response"]')?.value;
-          if(!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
-          let body = { ...this.reg, recaptcha_token: recaptchaToken }; delete body.otp;
+          if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
+          let body = {...this.reg, recaptcha_token: recaptchaToken}; delete body.otp;
           await this.apiCall('/auth/register/request', 'POST', body);
           this.setView('otp-reg', false); this.triggerAlert("OTP dikirim ke email.", "success");
         },
         async verifyRegister() {
-          await this.apiCall('/auth/register/verify', 'POST', { email: this.reg.email, otp: this.reg.otp });
+          await this.apiCall('/auth/register/verify', 'POST', {email: this.reg.email, otp: this.reg.otp});
+          this.setView('login');
           this.triggerAlert("Registrasi berhasil. Silakan login.", "success");
           const registeredEmail = this.reg.email;
-          this.setView('login');
           this.login.email = registeredEmail;
         },
         async reqForgot() {
           const recaptchaToken = document.querySelector('#recaptcha-fgt [name="g-recaptcha-response"]')?.value;
-          if(!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
-          await this.apiCall('/auth/password/forgot', 'POST', { email: this.fgt.email, recaptcha_token: recaptchaToken });
+          if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
+          await this.apiCall('/auth/password/forgot', 'POST', {email: this.fgt.email, recaptcha_token: recaptchaToken});
           this.setView('otp-reset', false); this.triggerAlert("OTP berhasil dikirim.", "success");
         },
         async verifyReset() {
-          await this.apiCall('/auth/password/reset', 'POST', { email: this.fgt.email, otp: this.fgt.otp, new_password: this.fgt.newPass });
-          this.triggerAlert("Password berhasil diubah.", "success"); this.setView('login');
+          await this.apiCall('/auth/password/reset', 'POST', {email: this.fgt.email, otp: this.fgt.otp, new_password: this.fgt.newPass});
+          this.setView('login');
+          this.triggerAlert("Password berhasil diubah.", "success");
         },
-        
-        // DASHBOARD API
+
         async loadMyProfile() {
           this.user = await this.apiCall('/users/me', 'GET', null, true);
           this.syncProfileForm(); // Sinkronkan ke form lokal
         },
         async updateProfile() {
-          let body = { name: this.prof.name, country: this.prof.country, city: this.prof.city, province: this.prof.province, district: this.prof.district, profile_picture: this.prof.profile_picture };
+          let body = {name: this.prof.name, country: this.prof.country, city: this.prof.city, province: this.prof.province, district: this.prof.district, profile_picture: this.prof.profile_picture};
           this.user = await this.apiCall('/users/me', 'PATCH', body, true);
           this.editProfileMode = false;
           this.triggerAlert("Profil berhasil diperbarui.", "success");
@@ -803,10 +1526,10 @@
           this.triggerAlert("OTP dikirim ke email Anda.", "success");
         },
         async updatePassword() {
-          let body = { new_password: this.prof.newPass };
-          if (this.pwdUpdateMethod === 'password') { body.current_password = this.prof.curPass; } 
-          else { body.otp = this.prof.otp; }
-          
+          let body = {new_password: this.prof.newPass};
+          if (this.pwdUpdateMethod === 'password') {body.current_password = this.prof.curPass;}
+          else {body.otp = this.prof.otp;}
+
           await this.apiCall('/users/me', 'PATCH', body, true);
           this.triggerAlert("Password berhasil diubah.", "success");
           this.prof.newPass = ''; this.prof.curPass = ''; this.prof.otp = ''; this.pwdOtpRequested = false;
@@ -816,22 +1539,38 @@
           this.del.requested = true; this.triggerAlert("Cek email Anda untuk kode OTP hapus akun.", "success");
         },
         async verifyDeleteAccount() {
-          await this.apiCall('/users/me', 'DELETE', { otp: this.del.otp }, true);
-          alert("Akun dihapus permanen."); this.logout();
+          await this.apiCall('/users/me', 'DELETE', {otp: this.del.otp}, true);
+          this.logout();
+          this.triggerAlert("Akun berhasil dihapus.")
         },
 
         // ADMIN API
-        async loadAdminUsers() { this.adminUsers = await this.apiCall('/admin/users', 'GET', null, true); },
-       async startEdit(u) { 
-          this.editAdminUserId = u.id; 
-          this.editAdminForm.name = u.name || ''; 
-          this.editAdminForm.role = u.role || 'user'; 
+        async loadAdminUsers() {
+          const q = this.adminSearch.trim();
+          const qs = q ? `?q=${encodeURIComponent(q)}` : '';
+          this.adminUsers = await this.apiCall(`/admin/users${qs}`, 'GET', null, true);
+        },
+        // Debounce agar tidak mengirim request ke server di setiap ketikan
+        onAdminSearchInput() {
+          this.editAdminUserId = null;
+          clearTimeout(this.adminSearchTimer);
+          this.adminSearchTimer = setTimeout(() => this.loadAdminUsers(), 350);
+        },
+        clearAdminSearch() {
+          clearTimeout(this.adminSearchTimer);
+          this.adminSearch = '';
+          this.loadAdminUsers();
+        },
+        async startEdit(u) {
+          this.editAdminUserId = u.id;
+          this.editAdminForm.name = u.name || '';
+          this.editAdminForm.role = u.role || 'user';
           this.editAdminForm.province = u.province || '';
           this.editAdminForm.city = u.city || '';
           this.editAdminForm.district = u.district || '';
           this.editAdminForm.country = u.country || '';
 
-          if (u.province){
+          if (u.province) {
             await this.onAdminProvChange(u.province);
           }
           this.editAdminForm.city = u.city || '';
@@ -846,38 +1585,39 @@
           await this.loadAdminUsers();
         },
         async onAdminProvChange(provName) {
-          if(!provName) { this.adminCities = []; this.adminDistricts = []; return; }
+          if (!provName) {this.adminCities = []; this.adminDistricts = []; return;}
           let prov = this.provinces.find(x => x.name === provName);
-          if(!prov) return;
+          if (!prov) return;
 
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
             this.adminCities = await r.json();
-          } catch(e) { this.adminCities = []; }
+          } catch (e) {this.adminCities = [];}
         },
         async onAdminCityChange(cityName) {
-          if(!cityName) { this.adminDistricts = []; return; }
+          if (!cityName) {this.adminDistricts = []; return;}
           let city = this.adminCities.find(x => x.name === cityName);
-          if(!city) return;
+          if (!city) return;
 
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
             this.adminDistricts = await r.json();
-          } catch(e) { this.adminDistricts = []; }
+          } catch (e) {this.adminDistricts = [];}
         },
-        openAdminModal(u) { this.adminModal = { show: true, user: u, newPass: '' }; },
+        openAdminModal(u) {this.adminModal = {show: true, user: u, newPass: ''};},
         async submitAdminPass() {
-          await this.apiCall(`/admin/users/${this.adminModal.user.id}`, 'PATCH', { new_password: this.adminModal.newPass }, true);
+          await this.apiCall(`/admin/users/${this.adminModal.user.id}`, 'PATCH', {new_password: this.adminModal.newPass}, true);
           this.adminModal.show = false; this.triggerAlert("Password pengguna direset.", "success");
         },
         async adminDeleteUser(id) {
-          if(!confirm("Yakin menghapus pengguna ini?")) return;
+          if (!confirm("Yakin menghapus pengguna ini?")) return;
           await this.apiCall(`/admin/users/${id}`, 'DELETE', null, true);
           this.triggerAlert("Pengguna dihapus.", "success"); await this.loadAdminUsers();
         },
-        logout() { localStorage.removeItem('tk'); this.token = null; this.user = null; this.setView('login'); }
+        logout() {localStorage.removeItem('tk'); this.token = null; this.user = null; this.setView('login'), this.triggerAlert("Anda telah keluar dari sistem", "success");}
       }));
     });
   </script>
 </body>
+
 </html>

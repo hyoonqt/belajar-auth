@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 import models
@@ -19,11 +20,35 @@ def require_admin(user: models.UserDB = Depends(get_current_user)) -> models.Use
     return user
 
 
+SEARCHABLE_COLUMNS = [
+    models.UserDB.email,
+    models.UserDB.name,
+    models.UserDB.city,
+    models.UserDB.province,
+    models.UserDB.district,
+    models.UserDB.country,
+    models.UserDB.role,
+]
+
+
 @router.get("/users", response_model=list[schemas.UserOut])
 async def list_users(
-    admin: models.UserDB = Depends(require_admin), db: Session = Depends(get_db)
+    q: str | None = None,
+    admin: models.UserDB = Depends(require_admin),
+    db: Session = Depends(get_db),
 ):
-    return db.query(models.UserDB).order_by(models.UserDB.id).all()
+    query = db.query(models.UserDB)
+
+    if q and q.strip():
+        # Setiap kata harus cocok di SALAH SATU kolom (AND antar kata, OR antar kolom per kata)
+        tokens = [t for t in q.strip().split() if t]
+        for token in tokens:
+            like_pattern = f"%{token}%"
+            query = query.filter(
+                or_(*[col.ilike(like_pattern) for col in SEARCHABLE_COLUMNS])
+            )
+
+    return query.order_by(models.UserDB.id).all()
 
 
 @router.patch("/users/{user_id}", response_model=schemas.UserOut)
@@ -59,6 +84,8 @@ async def admin_update_user(
         target.profile_picture = payload.profile_picture
     if payload.country is not None:
         target.country = payload.country
+    if payload.postal_code is not None:
+        target.postal_code = payload.postal_code
     if payload.city is not None:
         target.city = payload.city
     if payload.province is not None:
@@ -87,4 +114,3 @@ async def admin_delete_user(
     db.delete(target)
     db.commit()
     return {"message": "User berhasil dihapus."}
-
