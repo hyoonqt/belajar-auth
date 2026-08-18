@@ -730,7 +730,6 @@
         <h2>Selamat Datang</h2>
         <p class="subtitle">Masuk ke sistem dashboard.</p>
 
-        <!-- Tab Mode Login -->
         <div class="mode-tabs">
           <div class="mode-tab" :class="loginMode === 'password' ? 'active' : ''" @click="loginMode = 'password'">Via
             Password</div>
@@ -738,7 +737,6 @@
             @click="loginMode = 'otp'; loginOtpRequested = false;">Via Kode OTP</div>
         </div>
 
-        <!-- Mode Password -->
         <form x-show="loginMode === 'password'" @submit.prevent="reqLogin()">
           <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
               x-model="login.email" required
@@ -754,29 +752,39 @@
           <button type="submit" :disabled="loading">Login</button>
         </form>
 
-        <!-- Mode OTP -->
         <div x-show="loginMode === 'otp'">
           <div x-show="!loginOtpRequested">
-            <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-                x-model="login.email" required
+            <div class="form-group"><label>Email</label>
+              <!-- Ditambahkan @keyup.enter -->
+              <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="login.email" required
+                @keyup.enter="reqLoginOtp()"
                 oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
-                oninput="this.setCustomValidity('')"></div>
+                oninput="this.setCustomValidity('')">
+            </div>
             <div id="recaptcha-login" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe"
               data-theme="light" style="margin-bottom: 20px;"></div>
             <button @click="reqLoginOtp()" :disabled="loading">Minta kode OTP..</button>
           </div>
 
-          <div x-show=" loginOtpRequested">
-              <p
-                style="font-size: 12.5px; color: var(--success); margin-bottom: 16px; display:flex; align-items:center; gap:6px;">
-                <i class='bx bx-check-circle'></i> OTP telah dikirim ke email Anda.
-              </p>
-              <div class="form-group"><label>Masukkan OTP</label>
-                <input type="text" x-model="login.otp" maxlength="6"
-                  style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
-                  inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-              </div>
-              <button @click="verifyLoginOtp()" :disabled="loading || login.otp.length !== 6">Masuk dengan OTP</button>
+          <div x-show="loginOtpRequested">
+            <p
+              style="font-size: 12.5px; color: var(--success); margin-bottom: 16px; display:flex; align-items:center; gap:6px;">
+              <i class='bx bx-check-circle'></i> OTP telah dikirim ke email Anda.
+            </p>
+            <div class="form-group"><label>Masukkan OTP</label>
+              <!-- Ditambahkan @keyup.enter -->
+              <input type="text" x-model="login.otp" maxlength="6"
+                style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
+                inputmode="numeric" @keyup.enter="login.otp.length === 6 ? verifyLoginOtp() : null"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <button @click="verifyLoginOtp()" :disabled="loading || login.otp.length !== 6">Masuk dengan OTP</button>
+            <!-- Tampilan Timer -->
+            <div class="text-center" style="margin-top: 16px; font-size: 13px;">
+              <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
+                  x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
+              <span x-show="countdown === 0" class="link" @click="reqLoginOtp()">Kirim Ulang OTP</span>
+            </div>
           </div>
         </div>
 
@@ -786,12 +794,11 @@
         </div>
       </div>
 
-      <!-- Register View (Tetap sama) -->
+      <!-- Register View -->
       <div x-show="view === 'register'">
         <h2>Daftar Akun Baru</h2>
         <p class="subtitle">Mohon lengkapi data diri Anda.</p>
         <form @submit.prevent="reqRegister()">
-          <!-- Fields persis seperti sebelumnya -->
           <div class="form-group">
             <label>Foto Profil (Opsional)</label>
             <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true"
@@ -813,16 +820,14 @@
           <div class="grid-2">
             <div class="form-group"><label>Negara *</label>
               <select x-model="reg.country" @change="onCountryChange('reg')" required>
-                <option value="">Pilih Negara...</option>
-                <template x-for="c in globalCountries" :key="c">
+                <option value="">Pilih Negara...</option><template x-for="c in globalCountries" :key="c">
                   <option :value="c" x-text="c"></option>
                 </template>
               </select>
             </div>
             <div class="form-group"><label>Provinsi</label>
               <select x-model="reg.province" @change="onProvChange('reg')" :disabled="reg.country !== 'Indonesia'">
-                <option value="">Pilih Provinsi...</option>
-                <template x-for="p in provinces" :key="p.id">
+                <option value="">Pilih Provinsi...</option><template x-for="p in provinces" :key="p.id">
                   <option :value="p.name" x-text="p.name"></option>
                 </template>
               </select>
@@ -831,16 +836,14 @@
           <div class="form-group"><label>Kota / Kabupaten</label>
             <select x-model="reg.city" @change="onCityChange('reg')"
               :disabled="reg.country !== 'Indonesia' || !reg.province || regCities.length === 0">
-              <option value="">Pilih Kota/Kabupaten...</option>
-              <template x-for="c in regCities" :key="c.id">
+              <option value="">Pilih Kota/Kabupaten...</option><template x-for="c in regCities" :key="c.id">
                 <option :value="c.name" x-text="c.name"></option>
               </template>
             </select>
           </div>
           <div class="form-group"><label>Kecamatan</label>
             <select x-model="reg.district" :disabled="!reg.city || regDistricts.length === 0">
-              <option value="">Pilih Kecamatan...</option>
-              <template x-for="d in regDistricts" :key="d.id">
+              <option value="">Pilih Kecamatan...</option><template x-for="d in regDistricts" :key="d.id">
                 <option :value="d.name" x-text="d.name"></option>
               </template>
             </select>
@@ -866,11 +869,19 @@
         <p class="subtitle">Kami telah mengirim OTP ke <span x-text="reg.email"
             style="color:var(--ink); font-weight:600;"></span></p>
         <div class="form-group">
+          <!-- Ditambahkan @keyup.enter -->
           <input type="text" x-model="reg.otp" maxlength="6"
             style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
-            inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            inputmode="numeric" @keyup.enter="reg.otp.length === 6 ? verifyRegister() : null"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <button @click="verifyRegister()" :disabled="loading || reg.otp.length !== 6">Verifikasi Akun</button>
+        <!-- Tampilan Timer -->
+        <div class="text-center" style="margin-top: 16px; font-size: 13px;">
+          <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
+              x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
+          <span x-show="countdown === 0" class="link" @click="reqRegister()">Kirim Ulang OTP</span>
+        </div>
         <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('register')">Batal</span>
         </div>
       </div>
@@ -879,10 +890,12 @@
       <div x-show="view === 'forgot'">
         <h2>Pemulihan Akun</h2>
         <p class="subtitle">Masukkan email terdaftar Anda.</p>
-        <div class="form-group"><label>Email</label><input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-            x-model="fgt.email"
+        <div class="form-group"><label>Email</label>
+          <!-- Ditambahkan @keyup.enter -->
+          <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="fgt.email" @keyup.enter="reqForgot()"
             oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
-            oninput="this.setCustomValidity('')"></div>
+            oninput="this.setCustomValidity('')">
+        </div>
         <div id="recaptcha-fgt" class="g-recaptcha" data-sitekey="6Ld_vnctAAAAABrrCzXGo-5XZEKZN-T_B209jFqe"
           data-theme="light" style="margin-bottom: 20px;"></div>
         <button @click="reqForgot()" :disabled="loading">Kirim OTP Reset</button>
@@ -895,18 +908,28 @@
         <h2>Buat Password Baru</h2>
         <p class="subtitle">Masukkan kode dari email dan sandi baru.</p>
         <div class="form-group"><label>Kode OTP</label>
+          <!-- Ditambahkan @keyup.enter -->
           <input type="text" x-model="fgt.otp" maxlength="6"
             style="letter-spacing:12px; font-weight:600; text-align:center; font-family: var(--mono);"
-            inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            inputmode="numeric" @keyup.enter="fgt.otp.length === 6 && fgt.newPass ? verifyReset() : null"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="form-group"><label>Password Baru</label>
           <div class="password-wrapper">
-            <input :type="showPwd.reset ? 'text' : 'password'" x-model="fgt.newPass">
+            <!-- Ditambahkan @keyup.enter -->
+            <input :type="showPwd.reset ? 'text' : 'password'" x-model="fgt.newPass"
+              @keyup.enter="fgt.otp.length === 6 && fgt.newPass ? verifyReset() : null">
             <i class="bx toggle-password" :class="showPwd.reset ? 'bx-hide' : 'bx-show'"
               @click="showPwd.reset = !showPwd.reset"></i>
           </div>
         </div>
         <button @click="verifyReset()" :disabled="loading">Simpan Password</button>
+        <!-- Tampilan Timer -->
+        <div class="text-center" style="margin-top: 16px; font-size: 13px;">
+          <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
+              x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
+          <span x-show="countdown === 0" class="link" @click="reqForgot()">Kirim Ulang OTP</span>
+        </div>
         <div class="text-center" style="margin-top: 20px;"><span class="link" @click="setView('login')">Batal</span>
         </div>
       </div>
@@ -927,21 +950,15 @@
         </div>
       </div>
       <div class="nav-menu">
-        <div class="nav-item" :class="dashView === 'profile' ? 'active' : ''" @click="dashView = 'profile'">
-          <i class='bx bx-user'></i> Profil Saya
-        </div>
-        <div class="nav-item" :class="dashView === 'security' ? 'active' : ''" @click="dashView = 'security'">
-          <i class='bx bx-shield'></i> Keamanan
-        </div>
+        <div class="nav-item" :class="dashView === 'profile' ? 'active' : ''" @click="dashView = 'profile'"><i
+            class='bx bx-user'></i> Profil Saya</div>
+        <div class="nav-item" :class="dashView === 'security' ? 'active' : ''" @click="dashView = 'security'"><i
+            class='bx bx-shield'></i> Keamanan</div>
         <div style="margin: 12px 0; border-bottom: 1px solid var(--border);" x-show="user?.role === 'admin'"></div>
         <div class="nav-item" :class="dashView === 'admin' ? 'active' : ''" x-show="user?.role === 'admin'"
-          @click="dashView = 'admin'; loadAdminUsers()">
-          <i class='bx bx-group'></i> Kelola Pengguna
-        </div>
+          @click="dashView = 'admin'; loadAdminUsers()"><i class='bx bx-group'></i> Kelola Pengguna</div>
         <div style="flex: 1;"></div>
-        <div class="nav-item" style="color: var(--danger);" @click="logout()">
-          <i class='bx bx-log-out'></i> Keluar
-        </div>
+        <div class="nav-item" style="color: var(--danger);" @click="logout()"><i class='bx bx-log-out'></i> Keluar</div>
       </div>
     </aside>
 
@@ -959,7 +976,7 @@
       </div>
       <div class="dashboard-container">
 
-        <!-- Profil View (Sama seperti sebelumnya) -->
+        <!-- Profil View -->
         <div x-show="dashView === 'profile'">
           <div class="card">
             <!-- Read Only Mode -->
@@ -1009,17 +1026,15 @@
                   <i class='bx bx-cloud-upload' x-show="!prof.profile_picture"></i>
                   <img :src="prof.profile_picture" x-show="prof.profile_picture" alt="Preview">
                 </div>
-                <div style="text-align: right; margin-top: 4px;" x-show="prof.profile_picture">
-                  <span class="link" style="color: var(--danger); text-decoration-color: var(--danger);"
-                    @click="prof.profile_picture = ''">Hapus Foto</span>
-                </div>
+                <div style="text-align: right; margin-top: 4px;" x-show="prof.profile_picture"><span class="link"
+                    style="color: var(--danger); text-decoration-color: var(--danger);"
+                    @click="prof.profile_picture = ''">Hapus Foto</span></div>
               </div>
               <div class="form-group"><label>Nama Lengkap</label><input type="text" x-model="prof.name" required></div>
               <div class="grid-2">
                 <div class="form-group"><label>Negara</label>
                   <select x-model="prof.country" @change="onCountryChange('prof')" required>
-                    <option value="">Pilih Negara...</option>
-                    <template x-for="c in globalCountries" :key="c">
+                    <option value="">Pilih Negara...</option><template x-for="c in globalCountries" :key="c">
                       <option :value="c" x-text="c"></option>
                     </template>
                   </select>
@@ -1027,8 +1042,7 @@
                 <div class="form-group"><label>Provinsi</label>
                   <select x-model="prof.province" @change="onProvChange('prof')"
                     :disabled="prof.country !== 'Indonesia'">
-                    <option value="">Pilih Provinsi...</option>
-                    <template x-for="p in provinces" :key="p.id">
+                    <option value="">Pilih Provinsi...</option><template x-for="p in provinces" :key="p.id">
                       <option :value="p.name" x-text="p.name"></option>
                     </template>
                   </select>
@@ -1037,16 +1051,14 @@
               <div class="form-group"><label>Kota / Kabupaten</label>
                 <select x-model="prof.city" @change="onCityChange('prof')"
                   :disabled="prof.country !== 'Indonesia' || !prof.province || profCities.length === 0">
-                  <option value="">Pilih Kota/Kabupaten...</option>
-                  <template x-for="c in profCities" :key="c.id">
+                  <option value="">Pilih Kota/Kabupaten...</option><template x-for="c in profCities" :key="c.id">
                     <option :value="c.name" x-text="c.name"></option>
                   </template>
                 </select>
               </div>
               <div class="form-group"><label>Kecamatan</label>
                 <select x-model="prof.district" :disabled="!prof.city || profDistricts.length === 0">
-                  <option value="">Pilih Kecamatan...</option>
-                  <template x-for="d in profDistricts" :key="d.id">
+                  <option value="">Pilih Kecamatan...</option><template x-for="d in profDistricts" :key="d.id">
                     <option :value="d.name" x-text="d.name"></option>
                   </template>
                 </select>
@@ -1063,10 +1075,8 @@
 
         <!-- Keamanan View -->
         <div x-show="dashView === 'security'">
-
           <div class="card">
             <h3>Ubah Password</h3>
-
             <div class="mode-tabs">
               <div class="mode-tab" :class="pwdUpdateMethod === 'password' ? 'active' : ''"
                 @click="pwdUpdateMethod = 'password'">Sandi Lama</div>
@@ -1105,9 +1115,15 @@
                   <input type="text" x-model="prof.otp" maxlength="6"
                     style="text-align:center; letter-spacing:12px; font-weight:600; font-family: var(--mono);"
                     inputmode="numeric" placeholder="------" :required="pwdUpdateMethod === 'otp'">
+
+                  <!-- Tampilan Timer -->
+                  <div class="text-center" style="margin-top: 10px; font-size: 13px;">
+                    <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
+                        x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
+                    <span x-show="countdown === 0" class="link" @click="reqPwdOtp()">Kirim Ulang OTP</span>
+                  </div>
                 </div>
               </div>
-
               <button type="submit" style="width:auto; padding:10px 24px; margin-top: 14px;"
                 :disabled="loading || (pwdUpdateMethod === 'otp' && !pwdOtpRequested)">Update Password</button>
             </form>
@@ -1124,9 +1140,10 @@
             <div x-show="del.requested"
               style="background: var(--danger-bg); padding: 20px; border-radius: 8px; border: 1px solid rgba(156,59,46,0.2);">
               <div class="form-group"><label style="color: var(--danger);">Masukkan OTP Hapus Akun</label>
+                <!-- Ditambahkan @keyup.enter -->
                 <input type="text" x-model="del.otp" maxlength="6"
                   style="letter-spacing: 8px; text-align: center; font-size:18px; font-weight:600; font-family: var(--mono);"
-                  inputmode="numeric">
+                  inputmode="numeric" @keyup.enter="del.otp.length === 6 ? verifyDeleteAccount() : null">
               </div>
               <div class="flex-between">
                 <span class="link" style="color: var(--ink-muted); text-decoration-color: var(--border-strong);"
@@ -1176,14 +1193,12 @@
                       </template>
                       <template x-if="editAdminUserId !== u.id">
                         <td style="text-align: right; min-width: 140px;">
-                          <!-- PERBAIKAN: Sembunyikan semua opsi admin (kecuali diri sendiri) -->
                           <button class="icon-btn" title="Edit Data" x-show="u.role !== 'admin' || u.id === user.id"
                             @click="startEdit(u)"><i class='bx bx-edit'></i></button>
                           <button class="icon-btn" title="Reset Sandi" x-show="u.role !== 'admin'"
                             @click="openAdminModal(u)"><i class='bx bx-key'></i></button>
-                          <button class="icon-btn" style="color: var(--danger);" title="Hapus"
-                            x-show="u.role !== 'admin'" @click="adminDeleteUser(u.id)"><i
-                              class='bx bx-trash'></i></button>
+                          <button class="icon-btn" style="color: var(--danger);" title="Hapus" x-show="u.role !== 'admin'" 
+                          @click="openAdminDeleteModal(u)"><i class='bx bx-trash'></i></button>
                         </td>
                       </template>
                       <!-- Edit Mode Row -->
@@ -1265,13 +1280,30 @@
       <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Masukkan sandi baru untuk <strong
           x-text="adminModal.user?.email" style="color:var(--ink);"></strong></p>
       <div class="form-group">
-        <input type="text" placeholder="Password Baru" x-model="adminModal.newPass">
+        <!-- Ditambahkan @keyup.enter -->
+        <input type="text" placeholder="Password Baru" x-model="adminModal.newPass"
+          @keyup.enter="adminModal.newPass ? submitAdminPass() : null">
       </div>
       <div class="flex-between" style="margin-top:24px;">
         <button class="btn-outline" style="width:auto; padding:8px 16px;"
           @click="adminModal.show = false">Batal</button>
         <button style="width:auto; padding:8px 16px;" @click="submitAdminPass()" :disabled="!adminModal.newPass">Update
           Password</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Konfirmasi Hapus Pengguna -->
+  <div class="modal-overlay" x-show="adminDeleteModal.show" style="display:none;" x-transition>
+    <div class="modal-content" @click.stop>
+      <h3 style="color: var(--danger);">Hapus Pengguna</h3>
+      <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">
+        Apakah Anda yakin ingin menghapus pengguna <strong x-text="adminDeleteModal.user?.email" style="color:var(--ink);"></strong> secara permanen? Tindakan ini tidak dapat dibatalkan.
+      </p>
+      <div class="flex-between" style="margin-top:24px;">
+        <button class="btn-outline" style="width:auto; padding:8px 16px;" @click="adminDeleteModal.show = false">Batal</button>
+        <button class="btn-danger" style="width:auto; padding:8px 16px;" @click="confirmAdminDeleteUser()" :disabled="loading">Hapus Permanen</button>
       </div>
     </div>
   </div>
@@ -1285,14 +1317,14 @@
         user: null, view: 'login', dashView: 'profile', editProfileMode: false,
         loading: false, dragActive: false,
 
-        loginMode: 'password',
-        loginOtpRequested: false,
-
-        pwdUpdateMethod: 'password',
-        pwdOtpRequested: false,
-
+        loginMode: 'password', loginOtpRequested: false,
+        pwdUpdateMethod: 'password', pwdOtpRequested: false,
         alert: {show: false, msg: '', type: ''},
         showPwd: {login: false, reg: false, reset: false, profNew: false, profCur: false},
+
+        // --- Variabel Timer Persisten ---
+        countdown: 0,
+        timerInterval: null,
 
         globalCountries: [], provinces: [], regCities: [], profCities: [],
         regDistricts: [], profDistricts: [],
@@ -1305,9 +1337,42 @@
         adminUsers: [], editAdminUserId: null, editAdminForm: {name: '', role: '', province: '', country: '', city: '', district: ''},
         adminCities: [], adminDistricts: [],
         adminModal: {show: false, user: null, newPass: ''},
+        adminDeleteModal: {show: false, user: null},
         adminSearch: '', adminSearchTimer: null,
 
+        // --- Logika Timer ---
+        get formattedTimer() {
+          if (this.countdown <= 0) return "00:00";
+          const m = Math.floor(this.countdown / 60).toString().padStart(2, '0');
+          const s = (this.countdown % 60).toString().padStart(2, '0');
+          return `${m}:${s}`;
+        },
+        startTimer(seconds) {
+          const endTime = Date.now() + (seconds * 1000);
+          localStorage.setItem('otpTimerEnd', endTime);
+          this.checkTimer();
+          if (this.timerInterval) clearInterval(this.timerInterval);
+          this.timerInterval = setInterval(() => this.checkTimer(), 1000);
+        },
+        checkTimer() {
+          const endTime = localStorage.getItem('otpTimerEnd');
+          if (!endTime) return;
+          const diff = Math.floor((parseInt(endTime) - Date.now()) / 1000);
+          if (diff > 0) {
+            this.countdown = diff;
+          } else {
+            this.countdown = 0;
+            localStorage.removeItem('otpTimerEnd');
+            if (this.timerInterval) clearInterval(this.timerInterval);
+          }
+        },
+
         async initApp() {
+          this.checkTimer(); // Memulai timer kembali jika halaman ter-refresh
+          if (this.countdown > 0) {
+            this.timerInterval = setInterval(() => this.checkTimer(), 1000);
+          }
+
           this.$watch('dashView', () => this.resetDashState());
           this.$watch('editProfileMode', (val) => {if (!val) this.syncProfileForm();});
           await this.loadCountries();
@@ -1318,36 +1383,26 @@
           }
         },
 
-        // Pembersihan State Dashboard
         resetDashState() {
           this.editProfileMode = false;
-          this.prof.newPass = '';
-          this.prof.curPass = '';
-          this.prof.otp = '';
-          this.pwdOtpRequested = false;
-          this.pwdUpdateMethod = 'password';
-          this.del.requested = false;
-          this.del.otp = '';
+          this.prof.newPass = ''; this.prof.curPass = ''; this.prof.otp = '';
+          this.pwdOtpRequested = false; this.pwdUpdateMethod = 'password';
+          this.del.requested = false; this.del.otp = '';
           this.showPwd = {login: false, reg: false, reset: false, profNew: false, profCur: false};
-          this.adminSearch = '';
-          this.editAdminUserId = null;
+          this.adminSearch = ''; this.editAdminUserId = null;
           this.syncProfileForm();
         },
 
-        // Pembersihan State Halaman Auth
         resetAuthState() {
           this.login = {email: '', password: '', otp: ''};
           this.reg = {email: '', password: '', name: '', country: 'Indonesia', city: '', province: '', district: '', profile_picture: '', otp: ''};
           this.fgt = {email: '', otp: '', newPass: ''};
           this.regCities = []; this.regDistricts = [];
-          this.loginOtpRequested = false;
-          this.loginMode = 'password';
+          this.loginOtpRequested = false; this.loginMode = 'password';
           this.showPwd = {login: false, reg: false, reset: false, profNew: false, profCur: false};
-          // Reset ketiga widget reCAPTCHA (login-otp, register, forgot) berdasarkan urutan render di DOM
           [0, 1, 2].forEach((id) => {try {grecaptcha.reset(id);} catch (e) { } });
         },
 
-        // Sinkronisasi ulang data diri ke form edit
         async syncProfileForm() {
           if (this.user) {
             this.prof.name = this.user.name || '';
@@ -1389,7 +1444,6 @@
 
             if (r.status === 422) {
               let msg = d.detail[0]?.msg || "Format input tidak valid.";
-              // Hapus awalan "Value error, " bawaan sistem Pydantic secara otomatis
               msg = msg.replace(/^Value error,\s*/i, "");
               throw new Error(msg);
             }
@@ -1412,7 +1466,6 @@
           if (!file) return;
           if (!file.type.startsWith('image/')) return this.triggerAlert('Hanya file gambar yang diperbolehkan');
           if (file.size > 2 * 1024 * 1024) return this.triggerAlert('Maksimal 2MB');
-
           const reader = new FileReader();
           reader.onload = (ev) => {
             if (targetObj === 'reg') this.reg.profile_picture = ev.target.result;
@@ -1474,7 +1527,8 @@
         async reqLoginOtp() {
           const recaptchaToken = document.querySelector('#recaptcha-login [name="g-recaptcha-response"]')?.value;
           if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
-          await this.apiCall('/auth/login/otp/request', 'POST', {email: this.login.email, recaptcha_token: recaptchaToken});
+          const res = await this.apiCall('/auth/login/otp/request', 'POST', {email: this.login.email, recaptcha_token: recaptchaToken});
+          this.startTimer(res.expires_in || 60); // Mulai timer pakai API response
           this.loginOtpRequested = true;
         },
         async verifyLoginOtp() {
@@ -1488,20 +1542,22 @@
           const recaptchaToken = document.querySelector('#recaptcha-reg [name="g-recaptcha-response"]')?.value;
           if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
           let body = {...this.reg, recaptcha_token: recaptchaToken}; delete body.otp;
-          await this.apiCall('/auth/register/request', 'POST', body);
+          const res = await this.apiCall('/auth/register/request', 'POST', body);
+          this.startTimer(res.expires_in || 60);
           this.setView('otp-reg', false); this.triggerAlert("OTP dikirim ke email.", "success");
         },
         async verifyRegister() {
           await this.apiCall('/auth/register/verify', 'POST', {email: this.reg.email, otp: this.reg.otp});
-          this.setView('login');
-          this.triggerAlert("Registrasi berhasil. Silakan login.", "success");
           const registeredEmail = this.reg.email;
+          this.setView('login');
           this.login.email = registeredEmail;
+          this.triggerAlert("Registrasi berhasil. Silakan login.", "success");
         },
         async reqForgot() {
           const recaptchaToken = document.querySelector('#recaptcha-fgt [name="g-recaptcha-response"]')?.value;
           if (!recaptchaToken) return this.triggerAlert("Selesaikan verifikasi ReCaptcha.");
-          await this.apiCall('/auth/password/forgot', 'POST', {email: this.fgt.email, recaptcha_token: recaptchaToken});
+          const res = await this.apiCall('/auth/password/forgot', 'POST', {email: this.fgt.email, recaptcha_token: recaptchaToken});
+          this.startTimer(res.expires_in || 60);
           this.setView('otp-reset', false); this.triggerAlert("OTP berhasil dikirim.", "success");
         },
         async verifyReset() {
@@ -1512,7 +1568,7 @@
 
         async loadMyProfile() {
           this.user = await this.apiCall('/users/me', 'GET', null, true);
-          this.syncProfileForm(); // Sinkronkan ke form lokal
+          this.syncProfileForm();
         },
         async updateProfile() {
           let body = {name: this.prof.name, country: this.prof.country, city: this.prof.city, province: this.prof.province, district: this.prof.district, profile_picture: this.prof.profile_picture};
@@ -1521,7 +1577,8 @@
           this.triggerAlert("Profil berhasil diperbarui.", "success");
         },
         async reqPwdOtp() {
-          await this.apiCall('/users/me/password/otp/request', 'POST', null, true);
+          const res = await this.apiCall('/users/me/password/otp/request', 'POST', null, true);
+          this.startTimer(res.expires_in || 60);
           this.pwdOtpRequested = true;
           this.triggerAlert("OTP dikirim ke email Anda.", "success");
         },
@@ -1529,19 +1586,18 @@
           let body = {new_password: this.prof.newPass};
           if (this.pwdUpdateMethod === 'password') {body.current_password = this.prof.curPass;}
           else {body.otp = this.prof.otp;}
-
           await this.apiCall('/users/me', 'PATCH', body, true);
           this.triggerAlert("Password berhasil diubah.", "success");
           this.prof.newPass = ''; this.prof.curPass = ''; this.prof.otp = ''; this.pwdOtpRequested = false;
         },
         async reqDeleteAccount() {
-          await this.apiCall('/users/me/delete/request', 'POST', null, true);
+          const res = await this.apiCall('/users/me/delete/request', 'POST', null, true);
           this.del.requested = true; this.triggerAlert("Cek email Anda untuk kode OTP hapus akun.", "success");
         },
         async verifyDeleteAccount() {
           await this.apiCall('/users/me', 'DELETE', {otp: this.del.otp}, true);
           this.logout();
-          this.triggerAlert("Akun berhasil dihapus.")
+          this.triggerAlert("Akun berhasil dihapus.", "success");
         },
 
         // ADMIN API
@@ -1550,7 +1606,6 @@
           const qs = q ? `?q=${encodeURIComponent(q)}` : '';
           this.adminUsers = await this.apiCall(`/admin/users${qs}`, 'GET', null, true);
         },
-        // Debounce agar tidak mengirim request ke server di setiap ketikan
         onAdminSearchInput() {
           this.editAdminUserId = null;
           clearTimeout(this.adminSearchTimer);
@@ -1570,13 +1625,9 @@
           this.editAdminForm.district = u.district || '';
           this.editAdminForm.country = u.country || '';
 
-          if (u.province) {
-            await this.onAdminProvChange(u.province);
-          }
+          if (u.province) await this.onAdminProvChange(u.province);
           this.editAdminForm.city = u.city || '';
-          if (u.city) {
-            await this.onAdminCityChange(u.city);
-          }
+          if (u.city) await this.onAdminCityChange(u.city);
           this.editAdminForm.district = u.district || '';
         },
         async saveEdit(id) {
@@ -1588,7 +1639,6 @@
           if (!provName) {this.adminCities = []; this.adminDistricts = []; return;}
           let prov = this.provinces.find(x => x.name === provName);
           if (!prov) return;
-
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
             this.adminCities = await r.json();
@@ -1598,23 +1648,36 @@
           if (!cityName) {this.adminDistricts = []; return;}
           let city = this.adminCities.find(x => x.name === cityName);
           if (!city) return;
-
           try {
             let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
             this.adminDistricts = await r.json();
           } catch (e) {this.adminDistricts = [];}
         },
-        openAdminModal(u) {this.adminModal = {show: true, user: u, newPass: ''};},
+        openAdminModal(u) {
+          this.adminModal = {show: true, user: u, newPass: ''};
+        },
         async submitAdminPass() {
           await this.apiCall(`/admin/users/${this.adminModal.user.id}`, 'PATCH', {new_password: this.adminModal.newPass}, true);
           this.adminModal.show = false; this.triggerAlert("Password pengguna direset.", "success");
         },
-        async adminDeleteUser(id) {
-          if (!confirm("Yakin menghapus pengguna ini?")) return;
-          await this.apiCall(`/admin/users/${id}`, 'DELETE', null, true);
-          this.triggerAlert("Pengguna dihapus.", "success"); await this.loadAdminUsers();
+       openAdminDeleteModal(u) {
+          this.adminDeleteModal = { show: true, user: u };
         },
-        logout() {localStorage.removeItem('tk'); this.token = null; this.user = null; this.setView('login'), this.triggerAlert("Anda telah keluar dari sistem", "success");}
+        async confirmAdminDeleteUser() {
+          if (!this.adminDeleteModal.user) return;
+          const id = this.adminDeleteModal.user.id;
+          
+          await this.apiCall(`/admin/users/${id}`, 'DELETE', null, true);
+          
+          this.adminDeleteModal.show = false;
+          this.triggerAlert("Pengguna berhasil dihapus.", "success"); 
+          await this.loadAdminUsers();
+        },
+        logout() {
+          localStorage.removeItem('tk'); this.token = null; this.user = null;
+          this.setView('login');
+          this.triggerAlert("Anda telah keluar dari sistem", "success");
+        }
       }));
     });
   </script>

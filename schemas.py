@@ -31,7 +31,7 @@ class UserRegister(BaseModel):
     province: str
     city: str
     district: Optional[str] = None
-    profile_picture: Optional[str] = None       
+    profile_picture: Optional[str] = None
 
     @field_validator("password")
     @classmethod
