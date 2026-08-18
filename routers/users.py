@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
+#local import
 import models
 import schemas
 import security
@@ -24,7 +25,7 @@ async def profile(user: models.UserDB = Depends(get_current_user)):
     return user
 
 @router.post("/me/password/otp/request")
-@limiter.limit("3/minute")
+@limiter.limit("100/minute")
 async def request_profile_otp(
     request: Request, user: models.UserDB = Depends(get_current_user)
 ):

@@ -40,7 +40,6 @@ async def list_users(
     query = db.query(models.UserDB)
 
     if q and q.strip():
-        # Setiap kata harus cocok di SALAH SATU kolom (AND antar kata, OR antar kolom per kata)
         tokens = [t for t in q.strip().split() if t]
         for token in tokens:
             like_pattern = f"%{token}%"
@@ -84,8 +83,6 @@ async def admin_update_user(
         target.profile_picture = payload.profile_picture
     if payload.country is not None:
         target.country = payload.country
-    if payload.postal_code is not None:
-        target.postal_code = payload.postal_code
     if payload.city is not None:
         target.city = payload.city
     if payload.province is not None:
