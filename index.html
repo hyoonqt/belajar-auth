@@ -677,6 +677,10 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     }
 
+    .modal-content.modal-lg {
+      width: 460px;
+    }
+
     .mode-tabs {
       display: flex;
       gap: 4px;
@@ -716,7 +720,6 @@
 
   <div x-show="alert.show" :class="`alert ${alert.type}`" x-text="alert.msg" @click="alert.show = false"></div>
 
-  <!-- AUTH LAYOUT -->
   <div class="auth-layout" x-show="!token">
     <div class="auth-card">
 
@@ -725,7 +728,6 @@
         <span>Secure Access</span>
       </div>
 
-      <!-- Login View -->
       <div x-show="view === 'login'">
         <h2>Selamat Datang</h2>
         <p class="subtitle">Masuk ke sistem dashboard.</p>
@@ -755,7 +757,6 @@
         <div x-show="loginMode === 'otp'">
           <div x-show="!loginOtpRequested">
             <div class="form-group"><label>Email</label>
-              <!-- Ditambahkan @keyup.enter -->
               <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="login.email" required
                 @keyup.enter="reqLoginOtp()"
                 oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
@@ -772,14 +773,12 @@
               <i class='bx bx-check-circle'></i> OTP telah dikirim ke email Anda.
             </p>
             <div class="form-group"><label>Masukkan OTP</label>
-              <!-- Ditambahkan @keyup.enter -->
               <input type="text" x-model="login.otp" maxlength="6"
                 style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
                 inputmode="numeric" @keyup.enter="login.otp.length === 6 ? verifyLoginOtp() : null"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
             <button @click="verifyLoginOtp()" :disabled="loading || login.otp.length !== 6">Masuk dengan OTP</button>
-            <!-- Tampilan Timer -->
             <div class="text-center" style="margin-top: 16px; font-size: 13px;">
               <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
                   x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
@@ -794,7 +793,6 @@
         </div>
       </div>
 
-      <!-- Register View -->
       <div x-show="view === 'register'">
         <h2>Daftar Akun Baru</h2>
         <p class="subtitle">Mohon lengkapi data diri Anda.</p>
@@ -863,20 +861,17 @@
             Kembali</span></div>
       </div>
 
-      <!-- OTP Register -->
       <div x-show="view === 'otp-reg'">
         <h2>Cek Email Anda</h2>
         <p class="subtitle">Kami telah mengirim OTP ke <span x-text="reg.email"
             style="color:var(--ink); font-weight:600;"></span></p>
         <div class="form-group">
-          <!-- Ditambahkan @keyup.enter -->
           <input type="text" x-model="reg.otp" maxlength="6"
             style="text-align:center; letter-spacing:12px; font-size:20px; font-weight:600; font-family: var(--mono);"
             inputmode="numeric" @keyup.enter="reg.otp.length === 6 ? verifyRegister() : null"
             oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <button @click="verifyRegister()" :disabled="loading || reg.otp.length !== 6">Verifikasi Akun</button>
-        <!-- Tampilan Timer -->
         <div class="text-center" style="margin-top: 16px; font-size: 13px;">
           <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
               x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
@@ -886,13 +881,11 @@
         </div>
       </div>
 
-      <!-- Forgot Password -->
       <div x-show="view === 'forgot'">
         <h2>Pemulihan Akun</h2>
         <p class="subtitle">Masukkan email terdaftar Anda.</p>
         <div class="form-group"><label>Email</label>
-          <!-- Ditambahkan @keyup.enter -->
-          <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="fgt.email" @keyup.enter="reqForgot()"
+        <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="fgt.email" @keyup.enter="reqForgot()"
             oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
             oninput="this.setCustomValidity('')">
         </div>
@@ -903,12 +896,10 @@
         </div>
       </div>
 
-      <!-- OTP Reset -->
       <div x-show="view === 'otp-reset'">
         <h2>Buat Password Baru</h2>
         <p class="subtitle">Masukkan kode dari email dan sandi baru.</p>
         <div class="form-group"><label>Kode OTP</label>
-          <!-- Ditambahkan @keyup.enter -->
           <input type="text" x-model="fgt.otp" maxlength="6"
             style="letter-spacing:12px; font-weight:600; text-align:center; font-family: var(--mono);"
             inputmode="numeric" @keyup.enter="fgt.otp.length === 6 && fgt.newPass ? verifyReset() : null"
@@ -916,7 +907,6 @@
         </div>
         <div class="form-group"><label>Password Baru</label>
           <div class="password-wrapper">
-            <!-- Ditambahkan @keyup.enter -->
             <input :type="showPwd.reset ? 'text' : 'password'" x-model="fgt.newPass"
               @keyup.enter="fgt.otp.length === 6 && fgt.newPass ? verifyReset() : null">
             <i class="bx toggle-password" :class="showPwd.reset ? 'bx-hide' : 'bx-show'"
@@ -924,7 +914,6 @@
           </div>
         </div>
         <button @click="verifyReset()" :disabled="loading">Simpan Password</button>
-        <!-- Tampilan Timer -->
         <div class="text-center" style="margin-top: 16px; font-size: 13px;">
           <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
               x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
@@ -936,7 +925,6 @@
     </div>
   </div>
 
-  <!-- DASHBOARD LAYOUT -->
   <div class="dash-layout" x-show="token && user">
     <aside class="sidebar" x-show="user">
       <div class="sidebar-header">
@@ -976,10 +964,8 @@
       </div>
       <div class="dashboard-container">
 
-        <!-- Profil View -->
         <div x-show="dashView === 'profile'">
           <div class="card">
-            <!-- Read Only Mode -->
             <div x-show="!editProfileMode">
               <div
                 style="display:flex; align-items:center; gap:22px; margin-bottom:30px; padding-bottom:26px; border-bottom:1px solid var(--border);">
@@ -1017,7 +1003,6 @@
                 @click="editProfileMode = true"><i class='bx bx-edit'></i> Edit Profil</button>
             </div>
 
-            <!-- Edit Mode -->
             <form x-show="editProfileMode" @submit.prevent="updateProfile()">
               <div class="form-group"><label>Foto Profil</label>
                 <div class="drop-zone" :class="dragActive ? 'drag-active' : ''" @dragover.prevent="dragActive = true"
@@ -1073,7 +1058,6 @@
           </div>
         </div>
 
-        <!-- Keamanan View -->
         <div x-show="dashView === 'security'">
           <div class="card">
             <h3>Ubah Password</h3>
@@ -1093,7 +1077,6 @@
                 </div>
               </div>
 
-              <!-- Otorisasi Via Sandi Lama -->
               <div class="form-group" x-show="pwdUpdateMethod === 'password'">
                 <label>Password Saat Ini</label>
                 <div class="password-wrapper">
@@ -1104,7 +1087,6 @@
                 </div>
               </div>
 
-              <!-- Otorisasi Via OTP -->
               <div class="form-group" x-show="pwdUpdateMethod === 'otp'">
                 <label>Kode OTP</label>
                 <div x-show="!pwdOtpRequested">
@@ -1116,7 +1098,6 @@
                     style="text-align:center; letter-spacing:12px; font-weight:600; font-family: var(--mono);"
                     inputmode="numeric" placeholder="------" :required="pwdUpdateMethod === 'otp'">
 
-                  <!-- Tampilan Timer -->
                   <div class="text-center" style="margin-top: 10px; font-size: 13px;">
                     <span x-show="countdown > 0" style="color: var(--ink-muted);">Kirim ulang kode dalam <span
                         x-text="formattedTimer" style="font-weight: 600; color: var(--ink);"></span></span>
@@ -1140,7 +1121,6 @@
             <div x-show="del.requested"
               style="background: var(--danger-bg); padding: 20px; border-radius: 8px; border: 1px solid rgba(156,59,46,0.2);">
               <div class="form-group"><label style="color: var(--danger);">Masukkan OTP Hapus Akun</label>
-                <!-- Ditambahkan @keyup.enter -->
                 <input type="text" x-model="del.otp" maxlength="6"
                   style="letter-spacing: 8px; text-align: center; font-size:18px; font-weight:600; font-family: var(--mono);"
                   inputmode="numeric" @keyup.enter="del.otp.length === 6 ? verifyDeleteAccount() : null">
@@ -1155,14 +1135,17 @@
           </div>
         </div>
 
-        <!-- Admin View -->
         <div x-show="dashView === 'admin' && user?.role === 'admin'">
           <div class="card">
-            <div class="search-box">
-              <i class='bx bx-search'></i>
-              <input type="text" x-model="adminSearch" @input="onAdminSearchInput()"
-                placeholder="Cari email, nama, lokasi, atau role...">
-              <i class='bx bx-x clear-search' x-show="adminSearch" @click="clearAdminSearch()"></i>
+            <div class="flex-between" style="gap: 12px; align-items: flex-start;">
+              <div class="search-box" style="flex: 1;">
+                <i class='bx bx-search'></i>
+                <input type="text" x-model="adminSearch" @input="onAdminSearchInput()"
+                  placeholder="Cari email, nama, lokasi, atau role...">
+                <i class='bx bx-x clear-search' x-show="adminSearch" @click="clearAdminSearch()"></i>
+              </div>
+              <button type="button" style="width: auto; padding: 11px 18px; flex-shrink: 0; display: flex; align-items: center; gap: 6px;"
+                @click="openAdminCreateModal()"><i class='bx bx-plus'></i> Tambah</button>
             </div>
             <p class="search-meta" x-show="adminSearch" x-text="adminUsers.length + ' pengguna ditemukan'"></p>
             <div class="table-wrap">
@@ -1201,13 +1184,11 @@
                           @click="openAdminDeleteModal(u)"><i class='bx bx-trash'></i></button>
                         </td>
                       </template>
-                      <!-- Edit Mode Row -->
                       <template x-if="editAdminUserId === u.id">
                         <td>
                           <input type="text" x-model="editAdminForm.name" placeholder="Nama Lengkap"
                             style="padding: 6px; font-size: 13px; margin-bottom: 6px; width: 100%;">
                           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
-                            <!-- Dropdown Provinsi Admin -->
                             <select x-model="editAdminForm.province"
                               @change="editAdminForm.city = ''; onAdminProvChange(editAdminForm.province)"
                               style="padding: 6px; font-size: 13px;">
@@ -1217,8 +1198,7 @@
                                 </option>
                               </template>
                             </select>
-
-                            <!-- Dropdown Kota Admin -->
+                            
                             <select x-model="editAdminForm.city"
                               @change="editAdminForm.district = ''; onAdminCityChange(editAdminForm.city)"
                               :disabled="!editAdminForm.province || adminCities.length === 0"
@@ -1230,7 +1210,6 @@
                               </template>
                             </select>
                           </div>
-                          <!-- Dropdown Kecamatan Admin -->
                           <select x-model="editAdminForm.district"
                             :disabled="!editAdminForm.city || adminDistricts.length === 0"
                             style="padding: 6px; font-size: 13px; width: 100%;">
@@ -1280,7 +1259,6 @@
       <p style="font-size:13px; color:var(--ink-muted); margin-bottom:16px;">Masukkan sandi baru untuk <strong
           x-text="adminModal.user?.email" style="color:var(--ink);"></strong></p>
       <div class="form-group">
-        <!-- Ditambahkan @keyup.enter -->
         <input type="text" placeholder="Password Baru" x-model="adminModal.newPass"
           @keyup.enter="adminModal.newPass ? submitAdminPass() : null">
       </div>
@@ -1308,6 +1286,72 @@
     </div>
   </div>
 
+  <!-- Modal Tambah Pengguna -->
+  <div class="modal-overlay" x-show="adminCreateModal.show" style="display:none;" x-transition>
+    <div class="modal-content modal-lg" @click.stop>
+      <h3>Tambah Pengguna Baru</h3>
+      <form @submit.prevent="submitAdminCreate()">
+        <div class="form-group"><label>Email *</label>
+          <input type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" x-model="adminCreateForm.email" required
+            oninvalid="this.setCustomValidity(this.validity.valueMissing ? 'Email wajib diisi.' : 'Format email tidak valid, contoh: nama@domain.com')"
+            oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group"><label>Nama Lengkap *</label>
+          <input type="text" x-model="adminCreateForm.name" required>
+        </div>
+        <div class="form-group"><label>Password *</label>
+          <div class="password-wrapper">
+            <input :type="showCreatePwd ? 'text' : 'password'" x-model="adminCreateForm.password" required>
+            <i class="bx toggle-password" :class="showCreatePwd ? 'bx-hide' : 'bx-show'"
+              @click="showCreatePwd = !showCreatePwd"></i>
+          </div>
+        </div>
+        <div class="form-group"><label>Role</label>
+          <select x-model="adminCreateForm.role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Negara</label>
+            <select x-model="adminCreateForm.country" @change="onCreateCountryChange()">
+              <option value="">Pilih Negara...</option>
+              <template x-for="c in globalCountries" :key="c"><option :value="c" x-text="c"></option></template>
+            </select>
+          </div>
+          <div class="form-group"><label>Provinsi</label>
+            <select x-model="adminCreateForm.province" @change="onCreateProvChange()"
+              :disabled="adminCreateForm.country !== 'Indonesia'">
+              <option value="">Pilih Provinsi...</option>
+              <template x-for="p in provinces" :key="p.id"><option :value="p.name" x-text="p.name"></option></template>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Kota / Kabupaten</label>
+          <select x-model="adminCreateForm.city" @change="onCreateCityChange()"
+            :disabled="adminCreateForm.country !== 'Indonesia' || !adminCreateForm.province || createCities.length === 0">
+            <option value="">Pilih Kota/Kabupaten...</option>
+            <template x-for="c in createCities" :key="c.id"><option :value="c.name" x-text="c.name"></option></template>
+          </select>
+        </div>
+        <div class="form-group"><label>Kecamatan</label>
+          <select x-model="adminCreateForm.district"
+            :disabled="!adminCreateForm.city || createDistricts.length === 0">
+            <option value="">Pilih Kecamatan...</option>
+            <template x-for="d in createDistricts" :key="d.id"><option :value="d.name" x-text="d.name"></option></template>
+          </select>
+        </div>
+        <div class="flex-between" style="margin-top: 24px;">
+          <button type="button" class="btn-outline" style="width:auto; padding:10px 20px;"
+            @click="adminCreateModal.show = false">Batal</button>
+          <button type="submit" style="width:auto; padding:10px 24px;"
+            :disabled="loading || !adminCreateForm.email || !adminCreateForm.password || !adminCreateForm.name">Buat
+            Pengguna</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const API = "http://127.0.0.1:8000";
 
@@ -1322,7 +1366,6 @@
         alert: {show: false, msg: '', type: ''},
         showPwd: {login: false, reg: false, reset: false, profNew: false, profCur: false},
 
-        // --- Variabel Timer Persisten ---
         countdown: 0,
         timerInterval: null,
 
@@ -1339,6 +1382,10 @@
         adminModal: {show: false, user: null, newPass: ''},
         adminDeleteModal: {show: false, user: null},
         adminSearch: '', adminSearchTimer: null,
+
+        adminCreateModal: {show: false},
+        adminCreateForm: {email: '', password: '', name: '', role: 'user', country: 'Indonesia', province: '', city: '', district: ''},
+        createCities: [], createDistricts: [], showCreatePwd: false,
 
         // --- Logika Timer ---
         get formattedTimer() {
@@ -1368,7 +1415,7 @@
         },
 
         async initApp() {
-          this.checkTimer(); // Memulai timer kembali jika halaman ter-refresh
+          this.checkTimer(); 
           if (this.countdown > 0) {
             this.timerInterval = setInterval(() => this.checkTimer(), 1000);
           }
@@ -1448,11 +1495,11 @@
               throw new Error(msg);
             }
 
-            if (!r.ok) throw new Error(d.detail || "Terjadi kesalahan server.");
+            if (!r.ok) throw new Error(d.detail || "Per.");
             return d;
           } catch (e) {
             if (e.name === "TypeError" && e.message === "Failed to fetch") {
-              this.triggerAlert("Gagal terhubung ke server. Periksa koneksi backend Anda.", 'error');
+              this.triggerAlert("Gagal terhubung ke server.", 'error');
               throw new Error("Koneksi gagal");
             }
             this.triggerAlert(e.message, 'error');
@@ -1671,6 +1718,45 @@
           
           this.adminDeleteModal.show = false;
           this.triggerAlert("Pengguna berhasil dihapus.", "success"); 
+          await this.loadAdminUsers();
+        },
+        openAdminCreateModal() {
+          this.adminCreateForm = {email: '', password: '', name: '', role: 'user', country: 'Indonesia', province: '', city: '', district: ''};
+          this.createCities = []; this.createDistricts = []; this.showCreatePwd = false;
+          this.adminCreateModal = {show: true};
+        },
+        onCreateCountryChange() {
+          if (this.adminCreateForm.country !== 'Indonesia') {
+            this.adminCreateForm.province = ''; this.adminCreateForm.city = ''; this.adminCreateForm.district = '';
+            this.createCities = []; this.createDistricts = [];
+          }
+        },
+        async onCreateProvChange() {
+          const provName = this.adminCreateForm.province;
+          this.adminCreateForm.city = ''; this.adminCreateForm.district = ''; this.createDistricts = [];
+          if (!provName) {this.createCities = []; return;}
+          let prov = this.provinces.find(x => x.name === provName);
+          if (!prov) return;
+          try {
+            let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${prov.id}.json`);
+            this.createCities = await r.json();
+          } catch (e) {this.createCities = [];}
+        },
+        async onCreateCityChange() {
+          const cityName = this.adminCreateForm.city;
+          this.adminCreateForm.district = '';
+          if (!cityName) {this.createDistricts = []; return;}
+          let city = this.createCities.find(x => x.name === cityName);
+          if (!city) return;
+          try {
+            let r = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${city.id}.json`);
+            this.createDistricts = await r.json();
+          } catch (e) {this.createDistricts = [];}
+        },
+        async submitAdminCreate() {
+          await this.apiCall('/admin/users', 'POST', this.adminCreateForm, true);
+          this.adminCreateModal.show = false;
+          this.triggerAlert("Pengguna baru berhasil dibuat.", "success");
           await this.loadAdminUsers();
         },
         logout() {

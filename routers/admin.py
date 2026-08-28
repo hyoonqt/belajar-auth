@@ -50,6 +50,33 @@ async def list_users(
     return query.order_by(models.UserDB.id).all()
 
 
+@router.post("/users", response_model=schemas.UserOut, status_code=201)
+async def admin_create_user(
+    payload: schemas.AdminCreateUser,
+    admin: models.UserDB = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    existing = db.query(models.UserDB).filter(models.UserDB.email == payload.email).first()
+    if existing:
+        raise HTTPException(status_code=409, detail="Email ini sudah terdaftar.")
+
+    new_user = models.UserDB(
+        email=payload.email,
+        hashed_password=security.hash_password(payload.password),
+        name=payload.name,
+        role=payload.role,
+        profile_picture=payload.profile_picture,
+        country=payload.country,
+        city=payload.city,
+        province=payload.province,
+        district=payload.district,
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+
 @router.patch("/users/{user_id}", response_model=schemas.UserOut)
 async def admin_update_user(
     user_id: int,

@@ -119,7 +119,7 @@ async def login(
 
 
 @router.post("/password/forgot")
-@limiter.limit("100/minute")
+@limiter.limit("1/minute")
 async def forgot_password(
     request: Request, payload: schemas.ForgotPassword, db: Session = Depends(get_db)
 ):

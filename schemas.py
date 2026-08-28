@@ -31,7 +31,7 @@ class UserRegister(BaseModel):
     province: str
     city: str
     district: Optional[str] = None
-    profile_picture: Optional[str] = None
+    profile_picture: Optional[str] = None       
 
     @field_validator("password")
     @classmethod
@@ -118,6 +118,23 @@ class UpdateProfile(BaseModel):
     def check_new_password(cls, v: Optional[str]) -> Optional[str]:
         if v is None:
             return v
+        return validate_strong_password(v)
+
+
+class AdminCreateUser(BaseModel):
+    email: EmailStr
+    password: str
+    name: str
+    role: Literal["user", "admin"] = "user"
+    profile_picture: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    province: Optional[str] = None
+    district: Optional[str] = None
+
+    @field_validator("password")
+    @classmethod
+    def check_password(cls, v: str) -> str:
         return validate_strong_password(v)
 
 

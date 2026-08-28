@@ -19,7 +19,6 @@ async def send_otp_email(receiver_email: str, otp: str, context: str):
 
     subject_text = subjects.get(context, "Kode Verifikasi Keamanan")
     
-    # 1. Wording Teks Biasa (Fallback untuk email client lawas)
     plain_text = f"""Halo,
 
 Kami menerima permintaan untuk {subject_text.lower()} pada akun Anda.
@@ -34,7 +33,6 @@ Salam,
 Secure Auth System
 """
 
-    # 2. Template HTML dengan Internal CSS
     html_content = f"""
     <!DOCTYPE html>
     <html lang="id">
@@ -128,7 +126,6 @@ Secure Auth System
     </html>
     """
 
-    # 3. Setup MIMEMultipart
     msg = MIMEMultipart("alternative")
     msg["From"] = f"Secure Auth <{SENDER_EMAIL}>"
     msg["To"] = receiver_email
@@ -140,7 +137,6 @@ Secure Auth System
     msg.attach(part1)
     msg.attach(part2)
 
-    # 5. Kirim Email
     await aiosmtplib.send(
         msg,
         hostname=SMTP_HOST,
